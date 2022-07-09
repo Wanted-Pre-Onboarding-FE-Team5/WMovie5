@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Favorites from "./pages/Favorites";
+import GNB from "./components/GNB";
 
 function App() {
   const { movies, getMovies, patchMovieById } = useMovieModel();
@@ -20,6 +21,7 @@ function App() {
   return (
     <GlobalWrapper>
       <BrowserRouter>
+        <GNB />
         <Routes>
           <Route path="/" element={<Home props={movies} />} />
           <Route path="/search" element={<Search props={movies} />} />
@@ -38,7 +40,6 @@ function App() {
             <img src={movie.poster} alt="poster" />
           </span>
         ))} */}
-
       </BrowserRouter>
     </GlobalWrapper>
   );
