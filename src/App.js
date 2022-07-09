@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Favorites from "./pages/Favorites";
 import GNB from "./components/GNB";
+import Footer from "./components/Footer"
 
 function App() {
   const { movies, getMovies, patchMovieById } = useMovieModel();
@@ -40,6 +41,7 @@ function App() {
             <img src={movie.poster} alt="poster" />
           </span>
         ))} */}
+        <Footer />
       </BrowserRouter>
     </GlobalWrapper>
   );
