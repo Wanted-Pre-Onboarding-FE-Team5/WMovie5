@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { useMovieModel } from "./models/useMovieModel";
-import styled from "styled-components";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Search from "./pages/Search";
-import Favorites from "./pages/Favorites";
-import GNB from "./components/GNB";
+import React, { useEffect } from 'react';
+import { useMovieModel } from './models/useMovieModel';
+import styled from 'styled-components';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Search from './pages/Search';
+import Favorites from './pages/Favorites';
+import GNB from './components/GNB';
 
 function App() {
   const { movies, getMovies, patchMovieById } = useMovieModel();
@@ -23,9 +23,9 @@ function App() {
       <BrowserRouter>
         <GNB />
         <Routes>
-          <Route path="/" element={<Home props={movies} />} />
-          <Route path="/search" element={<Search props={movies} />} />
-          <Route path="/favorites" element={<Favorites props={movies} />} />
+          <Route path='/' element={<Home movies={movies} />} />
+          <Route path='/search' element={<Search movies={movies} />} />
+          <Route path='/favorites' element={<Favorites movies={movies} />} />
         </Routes>
 
         {/* 아랫 부분은 멘토님 코드입니다(영화 리스트 랜더링 코드). */}
