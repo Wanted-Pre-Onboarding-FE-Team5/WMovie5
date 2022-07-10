@@ -44,7 +44,7 @@ const RightContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 50px;
+  padding-right: 5%;
 `;
 
 const NavbarInnerContainer = styled.div`
@@ -55,6 +55,8 @@ const NavbarInnerContainer = styled.div`
 
 const NavbarLinkContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 40%;
 `;
 
 const NavbarLink = styled(Link)`
