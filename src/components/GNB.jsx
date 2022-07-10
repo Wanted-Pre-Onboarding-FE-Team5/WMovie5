@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import SearchInput from './SearchInput';
 
 const GNB = () => {
   return (
@@ -8,13 +9,13 @@ const GNB = () => {
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
-            <NavbarLink to='/'> Home</NavbarLink>
-            <NavbarLink to='/search'> Search</NavbarLink>
-            <NavbarLink to='/favorites'> Favorites</NavbarLink>
+            <NavbarLink to='/'>Home</NavbarLink>
+            <NavbarLink to='/search'>Search</NavbarLink>
+            <NavbarLink to='/favorites'>Favorites</NavbarLink>
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <SearchInput></SearchInput>
+          <SearchInput />
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>
@@ -44,13 +45,6 @@ const RightContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding-right: 50px;
-`;
-
-const SearchInput = styled.input`
-  width: 80%;
-  height: 35%;
-  border: none;
-  outline: none;
 `;
 
 const NavbarInnerContainer = styled.div`
