@@ -14,22 +14,22 @@ function App() {
     getMovies();
   }, []);
 
-  // const onClickImageCallback = (id, data) => {
-  //   patchMovieById(id, data).then(getMovies);
-  // };
+  const onClickImageCallback = (id, data) => {
+    patchMovieById(id, data).then(getMovies);
+  };
 
   return (
     <GlobalWrapper>
       <BrowserRouter>
         <GNB />
         <Routes>
-          <Route path="/" element={<Home props={movies} />} />
-          <Route path="/search" element={<Search props={movies} />} />
-          <Route path="/favorites" element={<Favorites props={movies} />} />
+          <Route path="/" element={<Home movies={movies} />} />
+          <Route path="/search" element={<Search movies={movies} />} />
+          <Route path="/favorites" element={<Favorites movies={movies} />} />
         </Routes>
 
         {/* 아랫 부분은 멘토님 코드입니다(영화 리스트 랜더링 코드). */}
-        {/* {movies?.map((movie, index) => (
+        {movies?.map((movie, index) => (
           <span
             key={index}
             style={{ border: movie.like ? "10px solid blue" : "none" }}
@@ -37,9 +37,9 @@ function App() {
               onClickImageCallback(movie.id, { like: !movie.like })
             }
           >
-            <img src={movie.poster} alt="poster" />
+            <img src={movie.medium_cover_image} alt="poster" />
           </span>
-        ))} */}
+        ))}
       </BrowserRouter>
     </GlobalWrapper>
   );
