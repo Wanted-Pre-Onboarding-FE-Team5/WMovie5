@@ -1,8 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import MovieList from "../components/MovieList";
+import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import { useMovieModel } from "../models/useMovieModel";
+import { movieState } from "../state/atoms";
 
 const Home = () => {
+  const [movies, setMovies] = useRecoilState(movieState);
+  const { toggleFavoriteById, getMovies } = useMovieModel();
+
+  const onClickHandler = async (id, data) => {
+    await toggleFavoriteById(id, data);
+    await getMovies().then((response) => {
+      setMovies(response);
+    });
+  };
+
   return (
     <MainContainer>
       <MovieList />
@@ -20,3 +31,4 @@ const MainContainer = styled.div`
   align-items: center;
   background-color: #191b22;
 `;
+
