@@ -1,3 +1,4 @@
+
 import React from 'react';
 import styled from 'styled-components';
 import SearchResult from '../components/SearchResult';
@@ -19,7 +20,9 @@ const Search = ({ movies }) => {
   }, [location]);
   console.log(searchText);
 
+
   return (
+
     <SearchResultContainer>
       <SearchResult value={searchText} />
     </SearchResultContainer>
@@ -27,5 +30,7 @@ const Search = ({ movies }) => {
 };
 
 export default Search;
+
+
 
 const SearchResultContainer = styled.div``;
