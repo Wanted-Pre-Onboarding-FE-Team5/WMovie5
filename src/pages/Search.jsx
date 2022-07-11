@@ -1,17 +1,35 @@
-import React from "react";
-import SearchDropdown from "../components/SearchDropdown";
-import SearchDropdownFuse from "../components/SearchDropdownFuse";
+import React from 'react';
+import styled from 'styled-components';
+import SearchResult from '../components/SearchResult';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import qs from 'qs';
 
-const Search = (props) => {
-  const { movies } = props;
+const Search = ({ movies }) => {
+  const [searchText, setSearchText] = useState('');
+  const location = useLocation();
+  console.log('useLocation', location);
+
+  useEffect(() => {
+    const query = qs.parse(location.search, {
+      ignoreQueryPrefix: true,
+      // 문자열 맨 앞의 ?를 생력
+    });
+    setSearchText(query.q);
+  }, [location]);
+  console.log(searchText);
+
 
   return (
-    /*이 아래 부분은 SearchDropdown을 보기위해 임의로 렌더링한 코드 = 필요없으시면 지우셔도 됩니다.*/
-    <div>
-      <SearchDropdown input={"간시"} movies={movies} />
-      <SearchDropdownFuse input={"간시"} movies={movies} />
-    </div>
+
+    <SearchResultContainer>
+      <SearchResult value={searchText} />
+    </SearchResultContainer>
   );
 };
 
 export default Search;
+
+
+
+const SearchResultContainer = styled.div``;

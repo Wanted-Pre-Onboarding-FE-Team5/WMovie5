@@ -1,101 +1,68 @@
-import React from "react";
-import styled from "styled-components";
-import { BiSearchAlt } from "react-icons/bi";
-import { main_color } from '../styles/globalStyle'
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import SearchInput from './SearchInput';
 
 const GNB = () => {
   return (
-    <GNBContainer>
-      <GNBLogo>WMovie5</GNBLogo>
-      <GNBTabContainer>
-        <GNBTab>검색</GNBTab>
-        <GNBTab>즐겨찾기</GNBTab>
-      </GNBTabContainer>
-      <GNBSearchContainer>
-        <GNBSearchForm>
-          <GNBSearchInput />
-          <GNBSearchButton>
-            <BiSearchAlt size={17} />
-          </GNBSearchButton>
-        </GNBSearchForm>
-      </GNBSearchContainer>
-    </GNBContainer>
+    <NavbarContainer>
+      <NavbarInnerContainer>
+        <LeftContainer>
+          <NavbarLinkContainer>
+            <NavbarLink to='/'>Home</NavbarLink>
+            <NavbarLink to='/search'>Search</NavbarLink>
+            <NavbarLink to='/favorites'>Favorites</NavbarLink>
+          </NavbarLinkContainer>
+        </LeftContainer>
+        <RightContainer>
+          <SearchInput />
+        </RightContainer>
+      </NavbarInnerContainer>
+    </NavbarContainer>
   );
 };
 
 export default GNB;
 
-const GNBContainer = styled.div`
+const NavbarContainer = styled.nav`
   width: 100%;
-  height: 50px;
-  position: sticky;
-  top: 0;
-  left: 0;
+  height: 80px;
+  background-color: black;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+`;
+
+const LeftContainer = styled.div`
+  flex: 70%;
+  display: flex;
   align-items: center;
-  background-color: ${main_color};
-  color: white;
-  padding-top: 4px;
-  box-shadow: 0px 4px 4px 4px ${main_color};
-  -moz-box-shadow: 0px 4px 4px 4px ${main_color};
-  -webkit-box-shadow: 0px 4px 4px 4px ${main_color};
+  padding-left: 5%;
 `;
 
-const GNBLogo = styled.div`
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-`;
-
-const GNBTabContainer = styled.div`
-  gap: 1rem;
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: center;
-`;
-
-const GNBTab = styled.div`
-  padding: 0 0.5rem;
-  cursor: pointer;
-`;
-
-const GNBSearchContainer = styled.div`
-  width: 15rem;
-  padding: 0.2rem 0;
-  border: 0.125rem solid gray;
-  border-radius: 50px;
+const RightContainer = styled.div`
+  flex: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 5%;
 `;
 
-const GNBSearchForm = styled.form`
-  text-align: center;
+const NavbarInnerContainer = styled.div`
+  width: 100%;
+  height: 80px;
   display: flex;
-  padding-left: 1rem;
-  align-items: center;
 `;
 
-const GNBSearchInput = styled.input`
-  width: 10rem;
-  border: none;
-  color: white;
-  background-color: ${main_color};
-  font-size: 0.9rem;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const GNBSearchButton = styled.button`
-  background-color: ${main_color};
-  color: white;
-  border: none;
-  margin-left: 0.2rem;
-  font-size: 1rem; 
+const NavbarLinkContainer = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
+  justify-content: space-between;
+  width: 40%;
+`;
+
+const NavbarLink = styled(Link)`
+  color: white;
+  font-size: x-large;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  margin: 10px;
 `;
