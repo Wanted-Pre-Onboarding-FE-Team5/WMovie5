@@ -8,6 +8,9 @@ const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
   //const [searchParams, setSearchParams] = useSearchParams('');
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log(navigate);
+  }, [navigate]);
 
   // useEffect(() => {
   //   setSearchText(searchParams.get('q') ?? '');
