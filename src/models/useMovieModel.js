@@ -1,24 +1,14 @@
-
-import React from "react";
 import { movieRequest } from "../services/movieService";
-export const useMovieModel=()=>{
-  const [movies, setMovies]= React.useState(null);
-  
-  const getMoviesCallback = (response)=>{
-    setMovies(response.data)
-  }
-
-  const getMovies = ()=>{
-    movieRequest.get("",getMoviesCallback)
-  }
-
-  const patchMovieById = async (id,data)=> {
-    movieRequest.patch(id,data)
-  }
+export const useMovieModel = () => {
+  const getMovies = async () => {
+    return (await movieRequest.get()).data;
+  };
+  const toggleFavoriteById = async (id, data) => {
+    return await movieRequest.patch(id, data);
+  };
 
   return {
-    movies,
+    toggleFavoriteById,
     getMovies,
-    patchMovieById
-  }
-}
+  };
+};
