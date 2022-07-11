@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Movie from "./Movie";
 
-const MovieList = () => {
+const MovieList = (props) => {
+  const { movies } = props; 
+
   return (
     <MovieListContainer>
-      <Movie />
+      <Movie movies={movies}/>
     </MovieListContainer>
   );
 };

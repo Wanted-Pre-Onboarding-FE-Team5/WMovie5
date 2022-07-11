@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
+
+//atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');

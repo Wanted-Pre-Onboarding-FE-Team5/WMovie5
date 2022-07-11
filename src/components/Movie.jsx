@@ -1,27 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useMovieModel } from "../models/useMovieModel";
+import MovieDetailModal from "./MovieDetailModal";
 
-const Movie = () => {
-  const { movies, getMovies, patchMovieById } = useMovieModel();
-
-  useEffect(() => {
-    getMovies();
-  }, []);
-
+const Movie = (props) => {
+  const { movies } = props;
   // const onClickImageCallback = (id, data) => {
   //   patchMovieById(id, data).then(getMovies);
   // };
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpenModal((open) => !open);
+    console.log(isOpenModal);
+  };
+
   return (
     <MoviePosterContainer>
+      <MovieDetailModal movies={movies} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal}/>
       {movies?.map((movie, index) => (
         <span
           key={index}
           // style={{ border: movie.like ? "10px solid blue" : "none" }}
           // onClick={() => onClickImageCallback(movie.id, { like: !movie.like })}
         >
-          <MoviePoster>
+          <MoviePoster onClick={toggleModal}>
             <img src={movie.medium_cover_image} alt="poster" />
           </MoviePoster>
         </span>
