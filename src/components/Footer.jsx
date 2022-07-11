@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { main_color } from '../styles/globalStyle'
 
 const Footer = () => {
   return (
@@ -20,7 +21,7 @@ const FooterContainer = styled.div`
   height: 70px;
   margin: 0;
   padding: 30px 0;
-  background-color: black;
+  background-color: ${main_color};
   color: white;
   display: flex;
   justify-content: center;
