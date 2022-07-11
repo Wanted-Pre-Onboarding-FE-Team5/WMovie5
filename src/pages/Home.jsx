@@ -15,23 +15,20 @@ const Home = () => {
   };
 
   return (
-    <div>
-      {/* <div>
-        {movies?.map((d, index) => (
-          <div
-            key={index}
-            onClick={() => {
-              onClickHandler(d.id, { like: !d.like });
-            }}
-            style={d.like ? { border: "3px solid blue" } : {}}
-          >
-            {d.medium_cover_image}
-          </div>
-        ))}
-      
-      </div> */}
-    </div>
+    <MainContainer>
+      <MovieList />
+    </MainContainer>
   );
 };
 
 export default Home;
+
+const MainContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #191b22;
+`;
+

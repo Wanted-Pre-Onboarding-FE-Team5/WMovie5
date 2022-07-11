@@ -151,7 +151,7 @@
       "state": "ok",
       "date_uploaded": "2022-06-27 19:04:25",
       "date_uploaded_unix": 1656349465,
-      "like": true
+      "like": false
     },
     {
       "id": 3304,
@@ -182,7 +182,7 @@
       "state": "ok",
       "date_uploaded": "2015-11-01 02:36:37",
       "date_uploaded_unix": 1446341797,
-      "like": false
+      "like": true
     },
     {
       "id": 41755,
@@ -213,7 +213,7 @@
       "state": "ok",
       "date_uploaded": "2022-04-27 23:20:53",
       "date_uploaded_unix": 1651094453,
-      "like": true
+      "like": false
     },
     {
       "id": 37027,
@@ -3781,7 +3781,7 @@
       "state": "ok",
       "date_uploaded": "2018-06-18 01:14:39",
       "date_uploaded_unix": 1529277279,
-      "like": true
+      "like": false
     },
     {
       "id": 7895,
@@ -3880,7 +3880,7 @@
       "state": "ok",
       "date_uploaded": "2017-02-25 13:54:43",
       "date_uploaded_unix": 1488027283,
-      "like": true
+      "like": false
     },
     {
       "id": 5512,
@@ -4007,7 +4007,7 @@
       "state": "ok",
       "date_uploaded": "2019-09-27 00:40:15",
       "date_uploaded_unix": 1569537615,
-      "like": true
+      "like": false
     },
     {
       "id": 10960,
@@ -4105,7 +4105,7 @@
       "state": "ok",
       "date_uploaded": "2019-03-05 05:04:18",
       "date_uploaded_unix": 1551758658,
-      "like": true
+      "like": false
     },
     {
       "id": 11370,
