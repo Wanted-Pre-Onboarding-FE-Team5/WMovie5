@@ -1,51 +1,50 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from 'recoil';
+import { movieState } from '../state/atoms';
 import styled from "styled-components";
 import { main_color } from "../styles/globalStyle";
 
-//test용 단어 목록 -> 기능 구현 완료후 삭제
-const wordsExample = [
-  "ap",
-  "korea",
-  "app",
-  "apple",
-  "air plane",
-  "enable",
-  "france",
-  "bag",
-  "water",
-  "trump",
-  "t-shirts",
-];
-
+//추천 검색어 너무 많으면 짜름? | scroll? (안이쁨) 
+//customFussyCallback만 손보기
+ 
 const SearchDropdown = (props) => {
   const { value, keyName } = props;
+  //console.log(keyName); //props 안 넘어오는 중 (기대값 : ArrowUp | ArrowDown)
+
   const [match, setMatch] = useState([]);
+  const [titles, setTitles] = useState([]);
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
+  
+  const navigate = useNavigate();
+  const movies = useRecoilState(movieState); //왜 movies 가져오면 [[영화데이터],function] 배열 형태인가?
+  useEffect(()=>{
+    setTitles(movies[0].map(i=>i.title_english)); //타이틀만 갈무리
+  },[]);
 
-  console.log(keyName.value); //props 안 넘어오는 중 (기대값 : ArrowUp | ArrowDown)
-
-  //useCallback?
+  //useCallback? 아니면 utils행
   const customFussy = (value, callback) => {
     const numberOfCases = [];
 
     //정규식 x => 반복문과 slice 사용
-    for (let x = 0; x < value.length; x++) {
+    for (let x = value.length-1; x >= 0 ; x--) {
       for (let y = 0; y < value.length - x; y++) {
-        numberOfCases.push(value.slice(x, value.length - y));
+        numberOfCases.push(value.slice(y, x+y+1));
       }
     }
+    console.log(numberOfCases); 
 
-    callback(numberOfCases);
+    callback(numberOfCases); 
   };
 
-  const customFussyCallback = (numberOfCasesArray) => {
+  const customFussyCallback = (numberOfCases) => {
     const filteredMatch = [];
-    for (let x = 0; x < numberOfCasesArray.length; x++) {
-      const caseWord = numberOfCasesArray[x];
+    for (let x = 0; x < numberOfCases.length; x++) {
+      const caseWord = numberOfCases[x];
       filteredMatch.push(
-        wordsExample.filter((word) => word.includes(caseWord) === true)
+        titles.filter((word) => word.toLowerCase().includes(caseWord) === true)
       );
-    }
+    } //여기에서 각 문자에 caseWord가 있는 인덱스 순으로 오름차순 정렬 해주면 좋겠다 - 이게 핵심 이거되야 Fuse랑 동급
 
     const arr2 = [
       ...new Set(
@@ -58,6 +57,7 @@ const SearchDropdown = (props) => {
     setMatch(arr2);
   };
 
+  //ArrowDown 시 추천검색어칸으로 이동하게 ArrowUp시 위로 -> optional
   if (keyName) {
     if (keyName === "ArrowDown" && match.length - 1 > dropDownItemIndex) {
       setDropDownItemIndex(dropDownItemIndex + 1);
@@ -71,8 +71,12 @@ const SearchDropdown = (props) => {
     }
   }
 
+  const handleDropdownClick = (event) => {
+    navigate(`/search?q=${event.target.innerText}`); 
+  }
+
   useEffect(() => {
-    customFussy(value, customFussyCallback);
+    customFussy(value.toLowerCase(), customFussyCallback);
   }, [value]);
 
   return (
@@ -80,7 +84,7 @@ const SearchDropdown = (props) => {
       <Text>추천 검색어</Text>
       <SearchResult>
         {match?.map((matchWord, index) => {
-          return <Recommend key={index}>{matchWord}</Recommend>;
+          return <Recommend key={index} onClick={handleDropdownClick}>{matchWord}</Recommend>;
         })}
       </SearchResult>
     </SearchDropdownContainer>
@@ -110,7 +114,9 @@ export const Text = styled.span`
 `;
 
 export const SearchResult = styled.div`
-  width: 90%;
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
 `;
 
 export const Recommend = styled.p`

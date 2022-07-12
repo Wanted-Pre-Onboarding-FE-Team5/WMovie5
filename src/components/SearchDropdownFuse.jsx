@@ -1,24 +1,10 @@
 //Fuse.js 라이브러리 적용 
 import React, { useEffect, useState, useMemo } from "react";
 import Fuse from "fuse.js";
+import { useRecoilState } from 'recoil';
+import { movieState } from '../state/atoms';
 import { SearchDropdownContainer, Text, SearchResult, Recommend } from "./SearchDropdown";
 
-//test용 단어 목록 -> 기능 구현 완료후 삭제
-const wordsExample = [
-  "ap",
-  "korea",
-  "app",
-  "apple",
-  "air plane",
-  "enable",
-  "france",
-  "bag",
-  "water",
-  "drug",
-  "t-shirts"
-];
-
-//Fuse 인스턴스에 줄 옵션 -> 따로 파일로?
 const fuseOptions = {
   findAllMatches: true,
   shouldSort: true,
@@ -26,11 +12,18 @@ const fuseOptions = {
 
 const SearchDropdownFuse = (props) => {
   const { value } = props;
+
   const [match, setMatch] = useState([]);
+  const [titles, setTitles] = useState([]);
+
+  const movies = useRecoilState(movieState);
+  useEffect(()=>{
+    setTitles(movies[0].map(i=>i.title_english));
+  },[]);
 
   const fuse = useMemo(
-    ()=>new Fuse(wordsExample,fuseOptions),
-    []
+    ()=>new Fuse(titles,fuseOptions),
+    [titles]
   );
 
   useEffect(()=>{
