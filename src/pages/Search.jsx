@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import qs from 'qs';
-import MovieList from '../components/MovieList';
-import { useRecoilState } from 'recoil';
-import { movieState } from '../state/atoms';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import qs from "qs";
+import MovieList from "../components/MovieList";
+import { useRecoilState } from "recoil";
+import { movieState } from "../state/atoms";
+import styled from "styled-components";
 //import { useMovieModel } from "../models/useMovieModel";
 
 const Search = () => {
@@ -23,28 +23,32 @@ const Search = () => {
  */
 
   const [movies, setMovies] = useRecoilState(movieState);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log('useLocation:', location);
+  console.log("useLocation:", location);
 
   useEffect(() => {
     if (location.search.length === 0) {
-      navigate('/');
+      navigate("/");
     }
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
       // 문자열 맨 앞의 ?를 생략
     });
-    console.log('query:', query);
+    console.log("query:", query);
     setSearchText(query.q);
+    console.log("filtertitle", filterTitle.title);
   }, [location]);
+  console.log("searchText", searchText);
 
   const filterTitle = movies.filter((text) => {
-    return text.title_english.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+    return text.title_english
+      .toLocaleLowerCase()
+      .includes(searchText.toLocaleLowerCase());
   });
-
+  filterTitle.length || navigate("/nopage");
   return (
     <SearchContainer>
       <MovieList movies={filterTitle} />

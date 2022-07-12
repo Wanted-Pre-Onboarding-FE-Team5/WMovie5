@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -9,9 +9,6 @@ import { useMovieModel } from "../models/useMovieModel";
 const Movie = (props) => {
   const { movies } = props;
   const [movieInModal, setMovieInModal] = useState([]);
-  // const onClickImageCallback = (id, data) => {
-  //   patchMovieById(id, data).then(getMovies);
-  // };
 
   const [isOpenModal, setIsOpenModal] = useRecoilState(
     movieDetailModalOpenState
@@ -20,31 +17,11 @@ const Movie = (props) => {
     setIsOpenModal(true);
   };
 
-  const closeModal = () => {
-    setIsOpenModal(false);
-  };
-
   const setMovies = useSetRecoilState(movieState);
 
   const { toggleFavoriteById, getMovies } = useMovieModel();
 
-  const containerRef = useRef();
-
-  //포스터 클릭 → ref? 즐겨찾기기능 → ref아니면 모달열기
-  // const onClickHandler = async (e, id, data) => {
-  //   console.log("e", e.target);
-  //   console.log("ref", containerRef.current);
-  //   console.log(e.target == containerRef.current);
-  //   if (e.target === containerRef.current) {
-  //     setIsOpenModal(false);
-  //     await toggleFavoriteById(id, data);
-  //     await getMovies().then((response) => {
-  //       setMovies(response);
-  //     });
-  //   } else {
-  //     setIsOpenModal(true);
-  //   }
-  // };
+  // const containerRef = useRef();
 
   const onClickHandler = async (id, data) => {
     setIsOpenModal(false);
@@ -53,7 +30,10 @@ const Movie = (props) => {
       setMovies(response);
     });
   };
-
+  const onErrorImg = (e) => {
+    e.target.src =
+      "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZXJyb3J8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60";
+  };
   return (
     <MoviePosterContainer>
       {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
@@ -61,7 +41,7 @@ const Movie = (props) => {
         <MoviePosterCard key={index}>
           {!isOpenModal && (
             <button
-              ref={containerRef}
+              // ref={containerRef}
               onClick={() => {
                 onClickHandler(movie.id, { like: !movie.like });
               }}
@@ -79,7 +59,11 @@ const Movie = (props) => {
               openModal();
             }}
           >
-            <img src={movie.medium_cover_image} alt="poster" />
+            <img
+              src={movie.medium_cover_image}
+              onError={onErrorImg}
+              alt="poster"
+            />
             <p> {movie.title}</p>
           </MoviePoster>
         </MoviePosterCard>
@@ -103,8 +87,6 @@ const MoviePosterContainer = styled.div`
     color: white;
     top: 5%;
     left: 75%;
-
-    /* opacity: 0; */
   }
 `;
 
@@ -147,8 +129,3 @@ const MoviePoster = styled.div`
 const MoviePosterCard = styled.span`
   position: relative;
 `;
-
-//TODO : 모달 열렸을 시 호버 이미지가 왜 보이지 ?
-//TODO : 에러 사진 해결
-//TODO : 즐겨찾기 기능 연결
-//TODO : 즐겨찾기 눌렀을 때 모달 안뜨게하기

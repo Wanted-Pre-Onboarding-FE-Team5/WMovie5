@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import Movie from './Movie';
+import React from "react";
+import styled from "styled-components";
+import Movie from "./Movie";
 
 const MovieList = (props) => {
   const { movies } = props;
