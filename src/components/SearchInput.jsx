@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { debounce } from '../utils/debounce';
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { debounce } from "../utils/debounce";
+import SearchDropdown from "./SearchDropdown";
+import SearchDropdownFuse from "./SearchDropdownFuse";
 
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState('');
-  const [debouncedText, setDebouncedText] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [debouncedText, setDebouncedText] = useState("");
 
+  const [keyName, setKeyName] = useState("");
+  console.log(keyName);
   const navigate = useNavigate();
 
   const updateDebounceText = useCallback(
@@ -20,26 +24,38 @@ const SearchInput = () => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSearchText(value);
+    setInputValue(value);
     updateDebounceText(value);
   };
 
   const onKeyUp = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim().length > 0) {
+    if(event.key === "ArrowDown" | event.key === "ArrowUp") {
+      return;
+    }
+    if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedText(event.target.value);
-      navigate(`/search?q=${searchText}`);
+      navigate(`/search?q=${inputValue}`);
     }
   };
 
   useEffect(() => {
-    console.log('debouncedText:', debouncedText);
+    console.log("debouncedText:", debouncedText);
   }, [debouncedText]);
 
   return (
     <SearchInputContainer>
-      <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
-      {/*debouncedText && <SearchDropdown value={debouncedText} />*/}
-      {/*{debouncedText && <SearchDropdownFuse value={debouncedText} />}*/}
+      <Input
+        type="text"
+        placeholder="검색어를 입력하세요"
+        value={inputValue}
+        onChange={handleChange}
+        onKeyUp={onKeyUp}
+        onKeyDown={(e) => {setKeyName(e.key)}}
+      />
+      {/*debouncedText && <SearchDropdownFuse value={debouncedText} />*/}
+      {debouncedText && (
+        <SearchDropdown value={debouncedText} keyName={keyName}/>
+      )}
     </SearchInputContainer>
   );
 };
@@ -49,8 +65,8 @@ export default SearchInput;
 const SearchInputContainer = styled.div`
   width: 15rem;
   display: flex;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   position: relative;
 `;

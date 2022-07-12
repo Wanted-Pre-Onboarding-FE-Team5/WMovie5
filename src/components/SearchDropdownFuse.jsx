@@ -1,23 +1,10 @@
 //Fuse.js 라이브러리 적용 
 import React, { useEffect, useState, useMemo } from "react";
 import Fuse from "fuse.js";
-import { SearchDropdownContainer, Text, SearchResult } from "./SearchDropdown";
+import { SearchDropdownContainer, Text, SearchResult, Recommend } from "./SearchDropdown";
 
 //test용 단어 목록 -> 기능 구현 완료후 삭제
 const wordsExample = [
-  "간",
-  "간염",
-  "간암",
-  "간성",
-  "간질병",
-  "간염증",
-  "간염증있을때",
-  "공백기간",
-  "기간",
-  "국가간교류",
-  "소금간",
-  "인간",
-  "인간관계",
   "ap",
   "korea",
   "app",
@@ -64,7 +51,7 @@ const SearchDropdownFuse = (props) => {
       <Text>추천 검색어</Text>
       <SearchResult>
         {match.map((matchWord, index) => {
-            return <p key={index}>{matchWord}</p>;
+            return <Recommend key={index}>{matchWord}</Recommend>;
           })}
       </SearchResult>
     </SearchDropdownContainer>
