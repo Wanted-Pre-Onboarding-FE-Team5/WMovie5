@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import SearchDropdownFuse from './SearchDropdownFuse';
+//import SearchDropdownFuse from './SearchDropdownFuse';
 import SearchDropdown from './SearchDropdown';
 
 //atom = searchResult를 다루는 전역 state 제작 예정

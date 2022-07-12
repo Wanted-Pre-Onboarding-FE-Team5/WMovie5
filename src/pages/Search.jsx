@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchResult from '../components/SearchResult';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import MovieList from '../components/MovieList';
 import qs from 'qs';
 
 const Search = ({ movies }) => {
@@ -23,7 +23,7 @@ const Search = ({ movies }) => {
   return (
 
     <SearchResultContainer>
-      <SearchResult value={searchText} />
+      <MovieList value={searchText} />
     </SearchResultContainer>
   );
 };
