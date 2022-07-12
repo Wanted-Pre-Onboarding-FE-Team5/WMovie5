@@ -1,72 +1,71 @@
-import React, { useRef, useEffect, useCallback } from 'react'
-import styled from "styled-components";
+import React, { useCallback, useRef, useState } from "react";
+import styled, { css } from "styled-components";
 import { MdClose } from "react-icons/md";
+import { useRecoilState } from "recoil";
+import { movieDetailModalOpenState } from "../state/atoms";
+import useOnClickOutside from "../utils/hooks/useOnClickOutside";
+import useOnKeyDown from "../utils/hooks/useOnKeyDown";
 
 const MovieDetailModal = (props) => {
-  //movies 데이터와 연결하는 기능 구현 필요
-  const { movies, isOpenModal, setIsOpenModal } = props;
-  const modalRef = useRef();
-  
+  const { movieInModal } = props;
 
-  const closeModal = (event) => {
-    if (modalRef.current === event.target) {
-      setIsOpenModal(false);
-    }
+  const [isOpenModal, setIsOpenModal] = useRecoilState(
+    movieDetailModalOpenState
+  );
+  const [isLoadedImage, setIsLoadedImage] = useState(false);
+  const modalRef = useRef(null);
+
+  const closeModal = useCallback(() => {
+    setIsOpenModal(false);
+  }, [setIsOpenModal]);
+
+  const imageOnLoadHandler = () => {
+    setIsLoadedImage(true);
   };
 
-  const keyPress = useCallback(
-    (event) => {
-      if (event.key === "Escape" && isOpenModal) {
-        setIsOpenModal(false);
-      }
-    },
-    [setIsOpenModal, isOpenModal]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", keyPress);
-    return () => document.removeEventListener("keydown", keyPress);
-  }, [keyPress]);
+  useOnClickOutside(modalRef, closeModal);
+  useOnKeyDown("Escape", () => {
+    setIsOpenModal(false);
+  });
 
   return (
-    <>
-      {isOpenModal ? (
-        <Background onClick={closeModal} ref={modalRef}>
-          <ModalWrapper isOpenModal={isOpenModal}>
-            <ModalImg
-              src="https://yts.mx/assets/images/movies/moana_2016/large-cover.jpg"
-              alt="Moana"
-            />
-            <ModalContent>
-              <h1>Moana</h1>
-              <p>
-                Moana Waialiki is a sea voyaging enthusiast and the only
-                daughter of a chief in a long line of navigators.
-              </p>
-              <button>bookmark</button>
-            </ModalContent>
-            <CloseModalButton
-              aria-label="Close modal"
-              onClick={() => setIsOpenModal((show) => !show)}
-            />
-          </ModalWrapper>
-        </Background>
-      ) : null}
-    </>
-  )
-}
+    <Background isLoadedImage={isLoadedImage}>
+      <ModalWrapper isOpenModal={isOpenModal} ref={modalRef}>
+        <ModalImg
+          src={movieInModal.large_cover_image}
+          alt={movieInModal.title + "_image"}
+          onLoad={imageOnLoadHandler}
+        />
+        <ModalContent>
+          <h1>{movieInModal.title}</h1>
+          <button>bookmark</button>
+        </ModalContent>
+        <CloseModalButton
+          aria-label="Close modal"
+          onClick={() => setIsOpenModal(false)}
+        />
+      </ModalWrapper>
+    </Background>
+  );
+};
 
-export default MovieDetailModal
+export default MovieDetailModal;
 
 const Background = styled.div`
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   position: fixed;
-  top:0;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  visibility: hidden;
+  ${(props) =>
+    props.isLoadedImage &&
+    css`
+      visibility: visible;
+    `}
 `;
 
 const ModalWrapper = styled.div`
