@@ -82,7 +82,7 @@ const value="물놀이";
 export default SearchDropdown;
 
 /* 이 아래 CSS는 자유롭게 수정해주세요 */
-const SearchDropdownContainer = styled.div`
+export const SearchDropdownContainer = styled.div`
   width: 95%;
   height: auto;
   background-color: ${main_color};
@@ -95,12 +95,12 @@ const SearchDropdownContainer = styled.div`
   top: 34px;
 `;
 
-const Text = styled.span`
+export const Text = styled.span`
   color: gray;
   font-size: 0.8rem;
 `;
 
-const SearchResult = styled.div`
+export const SearchResult = styled.div`
   width: 90%;
   padding: 0;
 `;

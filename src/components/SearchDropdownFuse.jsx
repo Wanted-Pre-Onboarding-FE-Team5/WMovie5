@@ -1,8 +1,7 @@
 //Fuse.js 라이브러리 적용 
 import React, { useEffect, useState, useMemo } from "react";
-import styled from "styled-components";
-import { main_color } from "../styles/globalStyle";
 import Fuse from "fuse.js";
+import { SearchDropdownContainer, Text, SearchResult } from "./SearchDropdown";
 
 //test용 단어 목록 -> 기능 구현 완료후 삭제
 const wordsExample = [
@@ -73,26 +72,3 @@ const SearchDropdownFuse = (props) => {
 };
 
 export default SearchDropdownFuse;
-
-/* 이 아래 CSS는 자유롭게 수정해주세요 */
-const SearchDropdownContainer = styled.div`
-  width: 100%;
-  height: auto;
-  background-color: ${main_color};
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 12px 18px;
-  z-index: 5;
-`;
-
-const Text = styled.span`
-  color: gray;
-  font-size: 0.8rem;
-`;
-
-const SearchResult = styled.div`
-  width: 90%;
-  padding: 0;
-`;
