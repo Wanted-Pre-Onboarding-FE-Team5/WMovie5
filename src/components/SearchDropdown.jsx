@@ -11,40 +11,58 @@ const wordsExample = [
   "간질병",
   "간염증",
   "간염증있을때",
-  "에어",
-  "에어컨만든사람",
-  "에어컨",
-  "커피프린스",
-  "커피",
-  "커피아이스크림",
-  "커스텀",
-  "apple",
+  "공백기간",
+  "기간",
+  "국가간교류",
+  "소금간",
+  "인간",
+  "인간관계",
+  "ap",
+  "korea",
   "app",
+  "apple",
   "air plane",
   "enable",
+  "france",
+  "bag",
+  "water",
+  "drug",
+  "t-shirts"
 ];
 
-//GNB에서 빈칸이 아닌 검색어를 props로 넘겨준다고 가정(input이 빈칸이면 아예 searchDropdown이 렌더링 되지 않아야한다고 생각함)
 const SearchDropdown = (props) => {
-  const { input, movies } = props;
-
-  //매칭되는 단어 목록 배열 match
+  const { value } = props;
   const [match, setMatch] = useState([]);
-  
+
   /*
    * 틀린 단어가 넘어와도 가장 연관성 있게 찾는 방법 생각해내야 됨.
    */
-  const findMatchByInput = (input) => {
-    const temp = wordsExample.filter((word) => word.includes(input));
-    if(temp.length===0) {
+  const findMatchByValue = (value) => {
+    const filteredMatch = wordsExample.filter((word) => word.includes(value) === true);
+    console.log("그냥 인풋값",value);
+    console.log("includes 적용",filteredMatch); 
+
+/* 정규식 만들기 -> sort()로 알아서 순서 오름차순으로  
+const value="물놀이";    
+    const a = value.split(''); //["물","놀","이"]
+
+    전부 일치 : regEx1 = /물놀이.* | .*물놀이.* | .*물놀이/
+2글자만 일치 : 
+/물놀/ regEx2 = / [^이]물놀[^이]|[^이]*물놀$ /
+/물X이/ regEx3 = / [^놀]물[^놀]*이[^놀]|[^놀]물[^놀]*이[^놀] /
+/놀이/ regEx4 = / [^물]놀이[^물] /
+1글자만 일치 : regEx3 = `/ .*[물놀이].* /g`
+*/
+
+    if(filteredMatch.length===0) {
       return ["검색어 없음"];
     }
-    else return temp.sort();
+    else return filteredMatch.sort();
   };
 
   useEffect(() => {
-    setMatch(findMatchByInput(input));
-  }, [input]);
+    setMatch(findMatchByValue(value));
+  }, [value]);
 
   return (
     <SearchDropdownContainer>
@@ -60,20 +78,18 @@ const SearchDropdown = (props) => {
 
 export default SearchDropdown;
 
-/* 이 아래 CSS는 자유롭게 수정해주세요 
- * SearchDropdownContainer의 width와 height는 임의의 값 
- */
+/* 이 아래 CSS는 자유롭게 수정해주세요 */
 const SearchDropdownContainer = styled.div`
-  box-sizing: border-box;
-  width: 500px;
-  height: 500px;
-  border-radius: 25px;
+  width: 95%;
+  height: auto;
   background-color: ${main_color};
   color: white;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 30px 20px;
+  padding: 12px 18px;
+  position: absolute;
+  top: 34px;
 `;
 
 const Text = styled.span`

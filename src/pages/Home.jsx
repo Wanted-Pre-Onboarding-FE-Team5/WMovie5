@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { useMovieModel } from "../models/useMovieModel";
 import { movieState } from "../state/atoms";
+import MovieList from '../components/MovieList';
 
 const Home = () => {
   const [movies, setMovies] = useRecoilState(movieState);

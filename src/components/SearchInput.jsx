@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
+import SearchDropdownFuse from './SearchDropdownFuse';
+import SearchDropdown from './SearchDropdown';
+
+//atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
@@ -58,6 +61,8 @@ const SearchInput = () => {
   return (
     <SearchInputContainer>
       <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
+      {searchText && <SearchDropdown value={searchText} />}
+      {/*{searchText && <SearchDropdownFuse value={searchText} />}*/}
     </SearchInputContainer>
   );
 };
@@ -65,14 +70,19 @@ const SearchInput = () => {
 export default SearchInput;
 
 const SearchInputContainer = styled.div`
-  width: 50%;
+  width: 15rem;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+  position: relative;
 `;
 
 const Input = styled.input`
   width: 100%;
-  height: 18px;
+  height: 2rem;
   border: none;
   outline: none;
   font-size: 16px;
-  padding: 12px;
+  padding: 0 12px;
 `;
