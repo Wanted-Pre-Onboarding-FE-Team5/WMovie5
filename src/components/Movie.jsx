@@ -1,30 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
+import { useRecoilState } from "recoil";
+import { movieDetailModalOpenState } from "../state/atoms";
 
 const Movie = (props) => {
   const { movies } = props;
+  const [movieInModal, setMovieInModal] = useState([]);
   // const onClickImageCallback = (id, data) => {
   //   patchMovieById(id, data).then(getMovies);
   // };
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useRecoilState(
+    movieDetailModalOpenState
+  );
 
-  const toggleModal = () => {
-    setIsOpenModal((open) => !open);
-    console.log(isOpenModal);
+  const openModal = () => {
+    setIsOpenModal(true)
   };
 
   return (
     <MoviePosterContainer>
-      <MovieDetailModal movies={movies} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal}/>
+      {isOpenModal && <MovieDetailModal movieInModal={movieInModal}/>}
       {movies?.map((movie, index) => (
-        <span
-          key={index}
-          // style={{ border: movie.like ? "10px solid blue" : "none" }}
-          // onClick={() => onClickImageCallback(movie.id, { like: !movie.like })}
-        >
-          <MoviePoster onClick={toggleModal}>
+        <span key={index}>
+          <MoviePoster onClick={()=>{
+            setMovieInModal(movie)
+            openModal();
+          }}>
             <img src={movie.medium_cover_image} alt="poster" />
           </MoviePoster>
         </span>
