@@ -1,25 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
 import { useRecoilState } from "recoil";
-import { movieDetailModalOpenState } from "../state/atoms";
+import { movieDetailModalOpenState, movieInModalState } from "../state/atoms";
+import useModalModel from "../models/useModalModel";
 
 const Movie = (props) => {
   const { movies } = props;
-  const [movieInModal, setMovieInModal] = useState([]);
-  // const onClickImageCallback = (id, data) => {
-  //   patchMovieById(id, data).then(getMovies);
-  // };
-
-  const [isOpenModal, setIsOpenModal] = useRecoilState(
-    movieDetailModalOpenState
-  );
-  console.log("rerender", movies[3].like);
-
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-
+  const [movieInModal, setMovieInModal] = useRecoilState(movieInModalState);
+  const {isOpenModal, openModal} = useModalModel(movieDetailModalOpenState);
+ 
   return (
     <MoviePosterContainer>
       {movies?.map((movie, index) => (

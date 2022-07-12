@@ -57,7 +57,7 @@
       "state": "ok",
       "date_uploaded": "2021-04-15 16:08:57",
       "date_uploaded_unix": 1618495737,
-      "like": false
+      "like": true
     },
     {
       "id": 3709,
@@ -122,7 +122,7 @@
       "state": "ok",
       "date_uploaded": "2020-02-24 05:16:24",
       "date_uploaded_unix": 1582517784,
-      "like": true
+      "like": false
     },
     {
       "id": 43059,

@@ -1,47 +1,40 @@
-import React, { useCallback, useRef, useState } from "react";
-import styled, { css } from "styled-components";
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
 import { MdClose } from "react-icons/md";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { movieDetailModalOpenState } from "../state/atoms";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import useOnKeyDown from "../utils/hooks/useOnKeyDown";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useMovieModel } from "../models/useMovieModel";
 import { movieState } from "../state/atoms";
+import useOnLoadImage from "../utils/hooks/useOnLoadImage";
+import useModalModel from "../models/useModalModel";
 
 const MovieDetailModal = (props) => {
   const { movieInModal } = props;
+  console.log(movieInModal);
+  const setMovies = useSetRecoilState(movieState);
+  const [like, setLike] = useState(movieInModal.like);
 
-  console.log("im modal");
-  const [isOpenModal, setIsOpenModal] = useRecoilState(
-    movieDetailModalOpenState
-  );
-  const [isLoadedImage, setIsLoadedImage] = useState(false);
   const modalRef = useRef(null);
 
-  const setMovies = useSetRecoilState(movieState);
-
+  const { isOpenModal, closeModal } = useModalModel(movieDetailModalOpenState);
   const { toggleFavoriteById, getMovies } = useMovieModel();
+  const { isLoadedImage, imageOnLoadHandler } = useOnLoadImage();
+  useOnClickOutside(modalRef, closeModal);
+  useOnKeyDown("Escape", () => {
+    closeModal();
+  });
 
-  const closeModal = useCallback(() => {
-    setIsOpenModal(false);
-  }, [setIsOpenModal]);
-
-  const imageOnLoadHandler = () => {
-    setIsLoadedImage(true);
-  };
-
+  //models/favoriteModel.js 로 재사용하면 어떨까?
   const bookMarkOnClickHandler = async (id, data) => {
-    console.log("click");
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
       setMovies(response);
+      setLike((like) => !like);
     });
   };
-  useOnClickOutside(modalRef, closeModal);
-  useOnKeyDown("Escape", () => {
-    setIsOpenModal(false);
-  });
 
   return (
     <Background isLoadedImage={isLoadedImage}>
@@ -53,23 +46,27 @@ const MovieDetailModal = (props) => {
           onError={imageOnLoadHandler}
         />
         <ModalContent>
-          <h1>{movieInModal.title}</h1>
+          <Header>
+            <Title>{movieInModal.title}</Title>
+            <Year>{movieInModal.year}</Year>
+            <Rating>{movieInModal.rating}</Rating>
+            <RunTime>{movieInModal.runTime}</RunTime>
+          </Header>
+
+          <Summary>{movieInModal.summary}</Summary>
+
           <ToggleFavButton
             onClick={() => {
               bookMarkOnClickHandler(movieInModal.id, {
-                like: !movieInModal.like,
+                like: !like,
               });
             }}
           >
             bookmark
-            {movieInModal.like ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
-            {console.log(movieInModal.like)}
+            {like ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
           </ToggleFavButton>
         </ModalContent>
-        <CloseModalButton
-          aria-label="Close modal"
-          onClick={() => setIsOpenModal(false)}
-        />
+        <CloseModalButton aria-label="Close modal" onClick={closeModal} />
       </ModalWrapper>
     </Background>
   );
@@ -112,9 +109,10 @@ const ModalImg = styled.img`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  line-height: 1.8;
+  justify-content: space-between;
+  /* align-items: center; */
+  padding: 10px;
+  line-height: 1.4;
   color: #141414;
 `;
 
@@ -129,14 +127,33 @@ const CloseModalButton = styled(MdClose)`
   z-index: 10;
 `;
 
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled.h1``;
+
+const Summary = styled.h1`
+  height: 360px;
+  line-height: 16px;
+  overflow-y: scroll;
+`;
+const Year = styled.div``;
+const Rating = styled.div``;
+const RunTime = styled.div``;
 const ToggleFavButton = styled.button`
   display: flex;
   padding: 10px 24px;
   background: #141414;
   color: #fff;
   border: none;
-  flex-direction: center;
+  justify-content: center;
   align-items: center;
+
+  &:hover {
+    background-color: gray;
+  }
 `;
 
 const FavoriteOffIcon = styled(MdFavoriteBorder)`
