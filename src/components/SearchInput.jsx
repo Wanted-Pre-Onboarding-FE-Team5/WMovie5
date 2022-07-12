@@ -1,62 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-//import SearchDropdownFuse from './SearchDropdownFuse';
-import SearchDropdown from './SearchDropdown';
+import { debounce } from '../utils/debounce';
 
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
-  //const [searchParams, setSearchParams] = useSearchParams('');
+  const [debouncedText, setDebouncedText] = useState('');
+
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   setSearchText(searchParams.get('q') ?? '');
-  // }, [searchParams]);
-
-  //! debouncing -----------------------------
-  const debounceFunction = (callback, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => callback(...args), delay);
-    };
-  };
-
-  const printValue = useCallback(
-    debounceFunction((searchText) => console.log("debounce 결과",searchText), 1000),
+  const updateDebounceText = useCallback(
+    debounce((value) => {
+      setDebouncedText(value);
+    }, 500),
     []
   );
 
   const handleChange = (event) => {
-    printValue(event.target.value);
-    setSearchText(event.target.value);
+    const value = event.target.value;
+    setSearchText(value);
+    updateDebounceText(value);
   };
-  //! ------------------------------------------
-
-  //! debouncing을 사용하는 경우 아래 handlechange 지우기
-  // const handleChange = useCallback((event) => {
-  //   setSearchText(event.target.value);
-  //   console.log(event.target.value);
-  // }, []);
-  //! ------------------------------------------
-
-  // const onKeyUp = useCallback((event) => {
-  //   if (event.key === 'Enter' && event.target.value.trim().length > 0) {
-  //     setSearchText(event.target.value);
-  //     console.log(searchText);
-  //     navigate(`/search?q=${searchText}`);
-  //   }
-  // }, []);
 
   const onKeyUp = (event) => {
     if (event.key === 'Enter' && event.target.value.trim().length > 0) {
-      setSearchText(event.target.value);
-      console.log(searchText);
+      setDebouncedText(event.target.value);
       navigate(`/search?q=${searchText}`);
     }
   };
+
+  useEffect(() => {
+    console.log('debouncedText:', debouncedText);
+  }, [debouncedText]);
 
   return (
     <SearchInputContainer>
