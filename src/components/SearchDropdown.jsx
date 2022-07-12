@@ -31,31 +31,29 @@ const wordsExample = [
 ];
 
 const SearchDropdown = (props) => {
-  const { value } = props;
-  const [match, setMatch] = useState([]);
+  const { value } = props; //최종 입력 단어만 넘어오는게 아님!
+  const [match, setMatch] = useState([]); //최종
 
-  /*
-   * 틀린 단어가 넘어와도 가장 연관성 있게 찾는 방법 생각해내야 됨.
-   */
-  const findMatchByValue = (value) => {
-    const filteredMatch = wordsExample.filter((word) => word.includes(value) === true);
-    console.log("그냥 인풋값",value);
-    console.log("includes 적용",filteredMatch); 
+  //인풋 value로 만들수 있는 경우의 수 만드는 함수(우선순위 제 기준으로 정함...틀릴수도있음)
+  const customFussy = (value, callback) =>{
+    const numberOfCases = []; //경우의 수 = [app, ap, a, pp,p p]
 
-/* 정규식 만들기 -> sort()로 알아서 순서 오름차순으로  
-const value="물놀이";    
-    const a = value.split(''); //["물","놀","이"]
+    //정규식 x => 반복문과 slice 사용
+    for(let x=0;x<value.length;x++){
+      for(let y=0;y<value.length-x;y++){
+        numberOfCases.push(value.slice(x,value.length-y));
+      }
+    }
+    callback(numberOfCases);
+  }
 
-    전부 일치 : regEx1 = /물놀이.*|.*물놀이.*|.*물놀이/g
-2글자만 일치 : 
-/물놀/ regEx2 = /[^이]물놀[^이]|[^이]*물놀$/
-/물X이/ regEx3 = /[^놀]물[^놀]*이[^놀]|[^놀]물[^놀]*이[^놀]/
-/놀이/ regEx4 = /.*[^물]놀이[^물]*\/
-1글자만 일치 : 
-/물/ regEx5 = /[^놀|이]([물][^놀|이][^이])[^놀|이]/
-/놀/ regEx6 = /[^물|이]([^물|이][놀][^이])[^물|이]/
-/이/ regEx7 = /[^놀|물]([^물|놀][^놀|물][이])[^물|놀]/
-*/
+  const customFussyCallback = (numberOfCasesArray) => {
+    const filteredMatch = [];
+    for(let x of numberOfCasesArray) {  //x 말고 뭐 좋은거 없을까요? case하려고 했는데 예약어임.
+      console.log(x);
+      filteredMatch.push(wordsExample.filter((word)=>word.includes(x)===true));
+      console.log("includes 적용하고 나서",filteredMatch);
+    }
 
     if(filteredMatch.length===0) {
       return ["검색어 없음"];
@@ -64,14 +62,14 @@ const value="물놀이";
   };
 
   useEffect(() => {
-    setMatch(findMatchByValue(value));
-  }, [value]);
+    setMatch(customFussy(value,customFussyCallback));
+  },[value]);
 
   return (
     <SearchDropdownContainer>
       <Text>추천 검색어</Text>
       <SearchResult>
-        {match.map((matchWord, index) => {
+        {match?.map((matchWord, index) => {
           return <p key={index}>{matchWord}</p>;
         })}
       </SearchResult>

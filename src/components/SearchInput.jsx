@@ -25,7 +25,7 @@ const SearchInput = () => {
   };
 
   const printValue = useCallback(
-    debounceFunction((searchText) => console.log(searchText), 500),
+    debounceFunction((searchText) => console.log("debounce 결과",searchText), 1000),
     []
   );
 
@@ -61,8 +61,8 @@ const SearchInput = () => {
   return (
     <SearchInputContainer>
       <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
-      {searchText && <SearchDropdown value={searchText} />}
-      {/*{searchText && <SearchDropdownFuse value={searchText} />}*/}
+      {/*debouncedText && <SearchDropdown value={debouncedText} />*/}
+      {/*{debouncedText && <SearchDropdownFuse value={debouncedText} />}*/}
     </SearchInputContainer>
   );
 };
