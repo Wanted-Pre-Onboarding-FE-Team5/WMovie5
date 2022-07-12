@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import MovieDetailModal from "./MovieDetailModal";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import MovieDetailModal from './MovieDetailModal';
 
 const Movie = (props) => {
   const { movies } = props;
@@ -17,15 +17,16 @@ const Movie = (props) => {
 
   return (
     <MoviePosterContainer>
-      <MovieDetailModal movies={movies} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal}/>
+      <MovieDetailModal movies={movies} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
       {movies?.map((movie, index) => (
         <span
           key={index}
           // style={{ border: movie.like ? "10px solid blue" : "none" }}
           // onClick={() => onClickImageCallback(movie.id, { like: !movie.like })}
         >
+          <p>{movie.title_english}</p>
           <MoviePoster onClick={toggleModal}>
-            <img src={movie.medium_cover_image} alt="poster" />
+            <img src={movie.medium_cover_image} alt='poster' />
           </MoviePoster>
         </span>
       ))}

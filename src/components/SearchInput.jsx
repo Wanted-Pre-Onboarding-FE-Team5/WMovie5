@@ -1,22 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
-  //const [searchParams, setSearchParams] = useSearchParams('');
+
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(navigate);
-  }, [navigate]);
 
-  // useEffect(() => {
-  //   setSearchText(searchParams.get('q') ?? '');
-  // }, [searchParams]);
-
-  //! debouncing -----------------------------
   const debounceFunction = (callback, delay) => {
     let timer;
     return (...args) => {
@@ -34,27 +26,10 @@ const SearchInput = () => {
     printValue(event.target.value);
     setSearchText(event.target.value);
   };
-  //! ------------------------------------------
-
-  //! debouncing을 사용하는 경우 아래 handlechange 지우기
-  // const handleChange = useCallback((event) => {
-  //   setSearchText(event.target.value);
-  //   console.log(event.target.value);
-  // }, []);
-  //! ------------------------------------------
-
-  // const onKeyUp = useCallback((event) => {
-  //   if (event.key === 'Enter' && event.target.value.trim().length > 0) {
-  //     setSearchText(event.target.value);
-  //     console.log(searchText);
-  //     navigate(`/search?q=${searchText}`);
-  //   }
-  // }, []);
 
   const onKeyUp = (event) => {
     if (event.key === 'Enter' && event.target.value.trim().length > 0) {
       setSearchText(event.target.value);
-      console.log(searchText);
       navigate(`/search?q=${searchText}`);
     }
   };
