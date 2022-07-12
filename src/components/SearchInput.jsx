@@ -1,38 +1,39 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { debounce } from '../utils/debounce';
 
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
+  const [debouncedText, setDebouncedText] = useState('');
 
   const navigate = useNavigate();
 
-  const debounceFunction = (callback, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => callback(...args), delay);
-    };
-  };
-
-  const printValue = useCallback(
-    debounceFunction((searchText) => console.log(searchText), 500),
+  const updateDebounceText = useCallback(
+    debounce((value) => {
+      setDebouncedText(value);
+    }, 500),
     []
   );
 
   const handleChange = (event) => {
-    printValue(event.target.value);
-    setSearchText(event.target.value);
+    const value = event.target.value;
+    setSearchText(value);
+    updateDebounceText(value);
   };
 
   const onKeyUp = (event) => {
     if (event.key === 'Enter' && event.target.value.trim().length > 0) {
-      setSearchText(event.target.value);
+      setDebouncedText(event.target.value);
       navigate(`/search?q=${searchText}`);
     }
   };
+
+  useEffect(() => {
+    console.log('debouncedText:', debouncedText);
+  }, [debouncedText]);
 
   return (
     <SearchInputContainer>
@@ -44,7 +45,10 @@ const SearchInput = () => {
 export default SearchInput;
 
 const SearchInputContainer = styled.div`
-  width: 50%;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Input = styled.input`

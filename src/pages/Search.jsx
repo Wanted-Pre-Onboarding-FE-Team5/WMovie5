@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import MovieList from '../components/MovieList';
 import { useRecoilState } from 'recoil';
@@ -25,10 +25,14 @@ const Search = () => {
   const [movies, setMovies] = useRecoilState(movieState);
   const [searchText, setSearchText] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   console.log('useLocation:', location);
 
   useEffect(() => {
+    if (location.search.length === 0) {
+      navigate('/');
+    }
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
       // 문자열 맨 앞의 ?를 생략
@@ -36,8 +40,6 @@ const Search = () => {
     console.log('query:', query);
     setSearchText(query.q);
   }, [location]);
-
-  console.log('searchText:', searchText);
 
   const filterTitle = movies.filter((text) => {
     return text.title_english.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
