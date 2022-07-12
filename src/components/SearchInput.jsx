@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   const navigate = useNavigate();
 
@@ -17,18 +17,18 @@ const SearchInput = () => {
     };
   };
 
-  const printValue = useCallback(
-    debounceFunction((searchText) => console.log(searchText), 500),
-    []
-  );
+  const onDebouncedSetSearchText = debounceFunction((value) => {
+    setSearchText(value);
+  }, 500);
 
   const handleChange = (event) => {
-    printValue(event.target.value);
-    setSearchText(event.target.value);
+    const value = event.target.value;
+    onDebouncedSetSearchText(value);
   };
 
   const onKeyUp = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim().length > 0) {
+    if (event.key === "Enter" && event.target.value.trim().length > 0) {
+      console.log("onkeyup", searchText);
       setSearchText(event.target.value);
       navigate(`/search?q=${searchText}`);
     }
@@ -36,7 +36,12 @@ const SearchInput = () => {
 
   return (
     <SearchInputContainer>
-      <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
+      <Input
+        type="text"
+        placeholder="검색어를 입력하세요"
+        onChange={handleChange}
+        onKeyUp={onKeyUp}
+      />
     </SearchInputContainer>
   );
 };

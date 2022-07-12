@@ -1,19 +1,27 @@
 import React, { useCallback, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { MdClose } from "react-icons/md";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { movieDetailModalOpenState } from "../state/atoms";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import useOnKeyDown from "../utils/hooks/useOnKeyDown";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { useMovieModel } from "../models/useMovieModel";
+import { movieState } from "../state/atoms";
 
 const MovieDetailModal = (props) => {
   const { movieInModal } = props;
 
+  console.log("im modal");
   const [isOpenModal, setIsOpenModal] = useRecoilState(
     movieDetailModalOpenState
   );
   const [isLoadedImage, setIsLoadedImage] = useState(false);
   const modalRef = useRef(null);
+
+  const setMovies = useSetRecoilState(movieState);
+
+  const { toggleFavoriteById, getMovies } = useMovieModel();
 
   const closeModal = useCallback(() => {
     setIsOpenModal(false);
@@ -23,6 +31,13 @@ const MovieDetailModal = (props) => {
     setIsLoadedImage(true);
   };
 
+  const bookMarkOnClickHandler = async (id, data) => {
+    console.log("click");
+    await toggleFavoriteById(id, data);
+    await getMovies().then((response) => {
+      setMovies(response);
+    });
+  };
   useOnClickOutside(modalRef, closeModal);
   useOnKeyDown("Escape", () => {
     setIsOpenModal(false);
@@ -35,10 +50,21 @@ const MovieDetailModal = (props) => {
           src={movieInModal.large_cover_image}
           alt={movieInModal.title + "_image"}
           onLoad={imageOnLoadHandler}
+          onError={imageOnLoadHandler}
         />
         <ModalContent>
           <h1>{movieInModal.title}</h1>
-          <button>bookmark</button>
+          <ToggleFavButton
+            onClick={() => {
+              bookMarkOnClickHandler(movieInModal.id, {
+                like: !movieInModal.like,
+              });
+            }}
+          >
+            bookmark
+            {movieInModal.like ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
+            {console.log(movieInModal.like)}
+          </ToggleFavButton>
         </ModalContent>
         <CloseModalButton
           aria-label="Close modal"
@@ -60,12 +86,7 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
-  ${(props) =>
-    props.isLoadedImage &&
-    css`
-      visibility: visible;
-    `}
+  visibility: ${(props) => (props.isLoadedImage ? "visible" : "hidden")};
 `;
 
 const ModalWrapper = styled.div`
@@ -95,15 +116,6 @@ const ModalContent = styled.div`
   align-items: center;
   line-height: 1.8;
   color: #141414;
-  p {
-    margin-bottom: 1rem;
-  }
-  button {
-    padding: 10px 24px;
-    background: #141414;
-    color: #fff;
-    border: none;
-  }
 `;
 
 const CloseModalButton = styled(MdClose)`
@@ -115,4 +127,25 @@ const CloseModalButton = styled(MdClose)`
   height: 32px;
   padding: 0;
   z-index: 10;
+`;
+
+const ToggleFavButton = styled.button`
+  display: flex;
+  padding: 10px 24px;
+  background: #141414;
+  color: #fff;
+  border: none;
+  flex-direction: center;
+  align-items: center;
+`;
+
+const FavoriteOffIcon = styled(MdFavoriteBorder)`
+  font-size: 24px;
+  margin-left: 12px;
+`;
+
+const FavoriteOnIcon = styled(MdFavorite)`
+  font-size: 24px;
+  margin-left: 12px;
+  color: red;
 `;

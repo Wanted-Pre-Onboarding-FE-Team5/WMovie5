@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import MovieDetailModal from './MovieDetailModal';
-import { useRecoilState } from 'recoil';
-import { movieDetailModalOpenState } from '../state/atoms';
+import React, { useState } from "react";
+import styled from "styled-components";
+import MovieDetailModal from "./MovieDetailModal";
+import { useRecoilState } from "recoil";
+import { movieDetailModalOpenState } from "../state/atoms";
 
 const Movie = (props) => {
   const { movies } = props;
@@ -11,7 +11,10 @@ const Movie = (props) => {
   //   patchMovieById(id, data).then(getMovies);
   // };
 
-  const [isOpenModal, setIsOpenModal] = useRecoilState(movieDetailModalOpenState);
+  const [isOpenModal, setIsOpenModal] = useRecoilState(
+    movieDetailModalOpenState
+  );
+  console.log("rerender", movies[3].like);
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -19,7 +22,6 @@ const Movie = (props) => {
 
   return (
     <MoviePosterContainer>
-      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
       {movies?.map((movie, index) => (
         <span key={index}>
           <MoviePoster
@@ -28,10 +30,11 @@ const Movie = (props) => {
               openModal();
             }}
           >
-            <img src={movie.medium_cover_image} alt='poster' />
+            <img src={movie.medium_cover_image} alt="poster" />
           </MoviePoster>
         </span>
       ))}
+      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
     </MoviePosterContainer>
   );
 };

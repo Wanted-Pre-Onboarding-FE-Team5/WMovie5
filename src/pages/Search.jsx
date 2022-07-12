@@ -26,18 +26,13 @@ const Search = () => {
   const [searchText, setSearchText] = useState('');
   const location = useLocation();
 
-  console.log('useLocation:', location);
-
   useEffect(() => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
       // 문자열 맨 앞의 ?를 생략
     });
-    console.log('query:', query);
     setSearchText(query.q);
   }, [location]);
-
-  console.log('searchText:', searchText);
 
   const filterTitle = movies.filter((text) => {
     return text.title_english.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
