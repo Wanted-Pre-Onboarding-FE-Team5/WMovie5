@@ -10,7 +10,6 @@ const GNB = () => {
         <LeftContainer>
           <NavbarLinkContainer>
             <NavbarLink to='/'>Home</NavbarLink>
-            <NavbarLink to='/search'>Search</NavbarLink>
             <NavbarLink to='/favorites'>Favorites</NavbarLink>
           </NavbarLinkContainer>
         </LeftContainer>
@@ -44,7 +43,6 @@ const RightContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 5%;
 `;
 
 const NavbarInnerContainer = styled.div`
@@ -56,7 +54,7 @@ const NavbarInnerContainer = styled.div`
 const NavbarLinkContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 30%;
 `;
 
 const NavbarLink = styled(Link)`
