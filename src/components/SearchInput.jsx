@@ -38,6 +38,8 @@ const SearchInput = () => {
   return (
     <SearchInputContainer>
       <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
+      {/*debouncedText && <SearchDropdown value={debouncedText} />*/}
+      {/*{debouncedText && <SearchDropdownFuse value={debouncedText} />}*/}
     </SearchInputContainer>
   );
 };
@@ -45,17 +47,19 @@ const SearchInput = () => {
 export default SearchInput;
 
 const SearchInputContainer = styled.div`
-  width: 60%;
+  width: 15rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+  position: relative;
 `;
 
 const Input = styled.input`
   width: 100%;
-  height: 18px;
+  height: 2rem;
   border: none;
   outline: none;
   font-size: 16px;
-  padding: 12px;
+  padding: 0 12px;
 `;

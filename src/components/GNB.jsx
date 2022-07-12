@@ -43,7 +43,6 @@ const RightContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 5%;
 `;
 
 const NavbarInnerContainer = styled.div`
