@@ -61,6 +61,7 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
   visibility: hidden;
+  z-index: 10;
   ${(props) =>
     props.isLoadedImage &&
     css`
