@@ -15,7 +15,6 @@ const MovieList = (props) => {
 export default MovieList;
 
 const MovieListContainer = styled.div`
-  border: 1px solid #fff;
   width: 95%;
   min-height: 100vh;
   margin: 50px;
