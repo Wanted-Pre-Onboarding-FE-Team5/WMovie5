@@ -135,7 +135,7 @@ const Header = styled.div`
 const Title = styled.h1``;
 
 const Summary = styled.h1`
-  height: 360px;
+  height: 300px;
   line-height: 16px;
   overflow-y: scroll;
 `;

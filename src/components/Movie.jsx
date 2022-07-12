@@ -18,6 +18,7 @@ const Movie = (props) => {
     closeModal();
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
+      console.log("res", response)
       setMovies(response);
     });
   };
