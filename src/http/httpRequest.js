@@ -3,7 +3,12 @@ export class HttpRequest {
     this.service = service;
   }
   async get() {
-    return await this.service.get();
+    const response = await this.service.get().catch((err) => {
+      console.log(err);
+      alert(err + "Check the server");
+      return { data: [] };
+    });
+    return response;
   }
   async patch(id, data) {
     await this.service.patch(`/${id}`, data);

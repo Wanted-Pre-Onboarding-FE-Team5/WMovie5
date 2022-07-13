@@ -27,8 +27,6 @@ const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log('useLocation:', location);
-
   useEffect(() => {
     if (location.search.length === 0) {
       navigate('/');
@@ -37,7 +35,6 @@ const Search = () => {
       ignoreQueryPrefix: true,
       // 문자열 맨 앞의 ?를 생략
     });
-    console.log('query:', query);
     setSearchText(query.q);
   }, [location]);
 

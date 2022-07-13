@@ -1,62 +1,29 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, {useRef} from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { movieDetailModalOpenState, movieState } from "../state/atoms";
+import { movieDetailModalOpenState, movieInModalState,movieState } from "../state/atoms";
+import useModalModel from "../models/useModalModel";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
 import { useMovieModel } from "../models/useMovieModel";
 const Movie = (props) => {
   const { movies } = props;
-  const [movieInModal, setMovieInModal] = useState([]);
-  // const onClickImageCallback = (id, data) => {
-  //   patchMovieById(id, data).then(getMovies);
-  // };
-
-  const [isOpenModal, setIsOpenModal] = useRecoilState(
-    movieDetailModalOpenState
-  );
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-
-  const closeModal = () => {
-    setIsOpenModal(false);
-  };
-
-  const setMovies = useSetRecoilState(movieState);
-
-  const { toggleFavoriteById, getMovies } = useMovieModel();
-
+  const [movieInModal, setMovieInModal] = useRecoilState(movieInModalState);
+  const {isOpenModal, openModal, closeModal} = useModalModel(movieDetailModalOpenState);
   const containerRef = useRef();
-
-  //포스터 클릭 → ref? 즐겨찾기기능 → ref아니면 모달열기
-  // const onClickHandler = async (e, id, data) => {
-  //   console.log("e", e.target);
-  //   console.log("ref", containerRef.current);
-  //   console.log(e.target == containerRef.current);
-  //   if (e.target === containerRef.current) {
-  //     setIsOpenModal(false);
-  //     await toggleFavoriteById(id, data);
-  //     await getMovies().then((response) => {
-  //       setMovies(response);
-  //     });
-  //   } else {
-  //     setIsOpenModal(true);
-  //   }
-  // };
-
+  const setMovies = useSetRecoilState(movieState);
+  const { toggleFavoriteById, getMovies } = useMovieModel();
   const onClickHandler = async (id, data) => {
-    setIsOpenModal(false);
+    closeModal();
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
+      console.log("res", response)
       setMovies(response);
     });
   };
-
   return (
     <MoviePosterContainer>
-      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
       {movies?.map((movie, index) => (
         <MoviePosterCard key={index}>
           {!isOpenModal && (
@@ -84,6 +51,7 @@ const Movie = (props) => {
           </MoviePoster>
         </MoviePosterCard>
       ))}
+      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
     </MoviePosterContainer>
   );
 };

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const useOnKeyDown = (key, handler) => {
   useEffect(() => {
     const listener = (event) => {
-      handler(event);
+      if (event.key === key) handler(event);
     };
 
     document.addEventListener("keydown", listener);

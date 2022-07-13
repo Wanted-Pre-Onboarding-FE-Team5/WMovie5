@@ -11,6 +11,7 @@ const SearchInput = () => {
 
   const navigate = useNavigate();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebounceText = useCallback(
     debounce((value) => {
       setDebouncedText(value);
