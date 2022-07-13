@@ -5,9 +5,8 @@ import { debounce } from "../utils/debounce";
 import SearchDropdown from "./SearchDropdown";
 
 const SearchInput = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [debouncedValue, setDebouncedValue] = useState('');
-
+  const [inputValue, setInputValue] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState("");
 
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const SearchInput = () => {
   };
 
   const onKeyUp = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim().length > 0) {
+    if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedValue(event.target.value);
 
       navigate(`/search?q=${inputValue}`);
@@ -34,9 +33,8 @@ const SearchInput = () => {
   };
 
   useEffect(() => {
-
-    console.log("debouncedText:", debouncedText);
-  }, [debouncedText]);
+    console.log("debouncedValue:", debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <SearchInputContainer>
@@ -47,7 +45,7 @@ const SearchInput = () => {
         onChange={handleChange}
         onKeyUp={onKeyUp}
       />
-      {debouncedText && <SearchDropdown value={debouncedText}/>}
+      {debouncedValue && <SearchDropdown value={debouncedValue} />}
     </SearchInputContainer>
   );
 };
