@@ -5,18 +5,20 @@ import { debounce } from "../utils/debounce";
 import SearchDropdown from "./SearchDropdown";
 
 const SearchInput = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [debouncedValue, setDebouncedValue] = useState('');
-
+  const [inputValue, setInputValue] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState("");
 
   const navigate = useNavigate();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onResetInputValue = () => {
+    setInputValue("");
+    setDebouncedValue("");
+  };
   const updateDebounceText = useCallback(
     debounce((value) => {
       setDebouncedValue(value);
     }, 500),
-    []
+    [debounce]
   );
 
   const handleChange = (event) => {
@@ -26,17 +28,15 @@ const SearchInput = () => {
   };
 
   const onKeyUp = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim().length > 0) {
+    if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedValue(event.target.value);
-
       navigate(`/search?q=${inputValue}`);
     }
   };
 
   useEffect(() => {
-
-    console.log("debouncedText:", debouncedText);
-  }, [debouncedText]);
+    console.log("debouncedText:", debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <SearchInputContainer>
@@ -47,7 +47,7 @@ const SearchInput = () => {
         onChange={handleChange}
         onKeyUp={onKeyUp}
       />
-      {debouncedText && <SearchDropdown value={debouncedText}/>}
+      {debouncedValue && <SearchDropdown value={debouncedValue} onResetInputValue={onResetInputValue} />}
     </SearchInputContainer>
   );
 };

@@ -1,18 +1,22 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { movieDetailModalOpenState, movieInModalState,movieState } from "../state/atoms";
+import {
+  movieDetailModalOpenState,
+  movieInModalState,
+  movieState,
+} from "../state/atoms";
 import useModalModel from "../models/useModalModel";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
 import { useMovieModel } from "../models/useMovieModel";
 const Movie = (props) => {
   const { movies } = props;
-
   const [movieInModal, setMovieInModal] = useRecoilState(movieInModalState);
-  const {isOpenModal, openModal, closeModal} = useModalModel(movieDetailModalOpenState);
-  const containerRef = useRef();
+  const { isOpenModal, openModal, closeModal } = useModalModel(
+    movieDetailModalOpenState
+  );
   const setMovies = useSetRecoilState(movieState);
   const { toggleFavoriteById, getMovies } = useMovieModel();
 
@@ -20,7 +24,6 @@ const Movie = (props) => {
     closeModal();
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
-      console.log("res", response)
       setMovies(response);
     });
   };
@@ -124,4 +127,5 @@ const PosterText = styled.p`
 
 const MoviePosterCard = styled.span`
   position: relative;
+  cursor: pointer;
 `;

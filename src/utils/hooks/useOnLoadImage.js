@@ -5,6 +5,7 @@ const useOnLoadImage = () => {
 
   const imageOnLoadHandler = () => {
     setIsLoadedImage(true);
+    
   };
 
   return { isLoadedImage, imageOnLoadHandler}

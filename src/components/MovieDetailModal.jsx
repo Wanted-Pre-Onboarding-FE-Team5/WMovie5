@@ -43,7 +43,11 @@ const MovieDetailModal = (props) => {
           src={movieInModal.large_cover_image}
           alt={movieInModal.title + "_image"}
           onLoad={imageOnLoadHandler}
-          onError={imageOnLoadHandler}
+          onError={(event) => {
+            imageOnLoadHandler();
+            event.target.src =
+              "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZXJyb3J8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60";
+          }}
         />
         <ModalContent>
           <Header>
@@ -62,7 +66,7 @@ const MovieDetailModal = (props) => {
               });
             }}
           >
-            bookmark
+            Add to favorites
             {like ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
           </ToggleFavButton>
         </ModalContent>
@@ -125,6 +129,7 @@ const CloseModalButton = styled(MdClose)`
   height: 32px;
   padding: 0;
   z-index: 10;
+  
 `;
 
 const Header = styled.div`
@@ -150,6 +155,7 @@ const ToggleFavButton = styled.button`
   border: none;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   &:hover {
     background-color: gray;
