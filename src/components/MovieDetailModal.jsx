@@ -1,32 +1,40 @@
-import React, { useCallback, useRef, useState } from "react";
-import styled, { css } from "styled-components";
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
 import { MdClose } from "react-icons/md";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { movieDetailModalOpenState } from "../state/atoms";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import useOnKeyDown from "../utils/hooks/useOnKeyDown";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { useMovieModel } from "../models/useMovieModel";
+import { movieState } from "../state/atoms";
+import useOnLoadImage from "../utils/hooks/useOnLoadImage";
+import useModalModel from "../models/useModalModel";
 
 const MovieDetailModal = (props) => {
   const { movieInModal } = props;
+  console.log(movieInModal);
+  const setMovies = useSetRecoilState(movieState);
+  const [like, setLike] = useState(movieInModal.like);
 
-  const [isOpenModal, setIsOpenModal] = useRecoilState(
-    movieDetailModalOpenState
-  );
-  const [isLoadedImage, setIsLoadedImage] = useState(false);
   const modalRef = useRef(null);
 
-  const closeModal = useCallback(() => {
-    setIsOpenModal(false);
-  }, [setIsOpenModal]);
-
-  const imageOnLoadHandler = () => {
-    setIsLoadedImage(true);
-  };
-
+  const { isOpenModal, closeModal } = useModalModel(movieDetailModalOpenState);
+  const { toggleFavoriteById, getMovies } = useMovieModel();
+  const { isLoadedImage, imageOnLoadHandler } = useOnLoadImage();
   useOnClickOutside(modalRef, closeModal);
   useOnKeyDown("Escape", () => {
-    setIsOpenModal(false);
+    closeModal();
   });
+
+  //models/favoriteModel.js 로 재사용하면 어떨까?
+  const bookMarkOnClickHandler = async (id, data) => {
+    await toggleFavoriteById(id, data);
+    await getMovies().then((response) => {
+      setMovies(response);
+      setLike((like) => !like);
+    });
+  };
 
   return (
     <Background isLoadedImage={isLoadedImage}>
@@ -35,15 +43,30 @@ const MovieDetailModal = (props) => {
           src={movieInModal.large_cover_image}
           alt={movieInModal.title + "_image"}
           onLoad={imageOnLoadHandler}
+          onError={imageOnLoadHandler}
         />
         <ModalContent>
-          <h1>{movieInModal.title}</h1>
-          <button>bookmark</button>
+          <Header>
+            <Title>{movieInModal.title}</Title>
+            <Year>{movieInModal.year}</Year>
+            <Rating>{movieInModal.rating}</Rating>
+            <RunTime>{movieInModal.runTime}</RunTime>
+          </Header>
+
+          <Summary>{movieInModal.summary}</Summary>
+
+          <ToggleFavButton
+            onClick={() => {
+              bookMarkOnClickHandler(movieInModal.id, {
+                like: !like,
+              });
+            }}
+          >
+            bookmark
+            {like ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
+          </ToggleFavButton>
         </ModalContent>
-        <CloseModalButton
-          aria-label="Close modal"
-          onClick={() => setIsOpenModal(false)}
-        />
+        <CloseModalButton aria-label="Close modal" onClick={closeModal} />
       </ModalWrapper>
     </Background>
   );
@@ -60,13 +83,7 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
-  z-index: 10;
-  ${(props) =>
-    props.isLoadedImage &&
-    css`
-      visibility: visible;
-    `}
+  visibility: ${(props) => (props.isLoadedImage ? "visible" : "hidden")};
 `;
 
 const ModalWrapper = styled.div`
@@ -92,19 +109,11 @@ const ModalImg = styled.img`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  line-height: 1.8;
+  justify-content: space-between;
+  /* align-items: center; */
+  padding: 10px;
+  line-height: 1.4;
   color: #141414;
-  p {
-    margin-bottom: 1rem;
-  }
-  button {
-    padding: 10px 24px;
-    background: #141414;
-    color: #fff;
-    border: none;
-  }
 `;
 
 const CloseModalButton = styled(MdClose)`
@@ -116,4 +125,44 @@ const CloseModalButton = styled(MdClose)`
   height: 32px;
   padding: 0;
   z-index: 10;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled.h1``;
+
+const Summary = styled.h1`
+  height: 300px;
+  line-height: 16px;
+  overflow-y: scroll;
+`;
+const Year = styled.div``;
+const Rating = styled.div``;
+const RunTime = styled.div``;
+const ToggleFavButton = styled.button`
+  display: flex;
+  padding: 10px 24px;
+  background: #141414;
+  color: #fff;
+  border: none;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: gray;
+  }
+`;
+
+const FavoriteOffIcon = styled(MdFavoriteBorder)`
+  font-size: 24px;
+  margin-left: 12px;
+`;
+
+const FavoriteOnIcon = styled(MdFavorite)`
+  font-size: 24px;
+  margin-left: 12px;
+  color: red;
 `;

@@ -1,30 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, {useRef} from "react";
 import styled from "styled-components";
 import MovieDetailModal from "./MovieDetailModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { movieDetailModalOpenState, movieState } from "../state/atoms";
+import { movieDetailModalOpenState, movieInModalState,movieState } from "../state/atoms";
+import useModalModel from "../models/useModalModel";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
 import { useMovieModel } from "../models/useMovieModel";
 const Movie = (props) => {
   const { movies } = props;
-  const [movieInModal, setMovieInModal] = useState([]);
 
-  const [isOpenModal, setIsOpenModal] = useRecoilState(
-    movieDetailModalOpenState
-  );
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-
+  const [movieInModal, setMovieInModal] = useRecoilState(movieInModalState);
+  const {isOpenModal, openModal, closeModal} = useModalModel(movieDetailModalOpenState);
+  const containerRef = useRef();
   const setMovies = useSetRecoilState(movieState);
-
   const { toggleFavoriteById, getMovies } = useMovieModel();
 
   const onClickHandler = async (id, data) => {
-    setIsOpenModal(false);
+    closeModal();
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
+      console.log("res", response)
       setMovies(response);
     });
   };
@@ -32,9 +28,9 @@ const Movie = (props) => {
     e.target.src =
       "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZXJyb3J8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60";
   };
+
   return (
     <MoviePosterContainer>
-      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
       {movies?.map((movie, index) => (
         <MoviePosterCard key={index}>
           {!isOpenModal && (
@@ -65,6 +61,7 @@ const Movie = (props) => {
           </MoviePoster>
         </MoviePosterCard>
       ))}
+      {isOpenModal && <MovieDetailModal movieInModal={movieInModal} />}
     </MoviePosterContainer>
   );
 };

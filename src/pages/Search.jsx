@@ -13,7 +13,6 @@ const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log("useLocation:", location);
 
   useEffect(() => {
     if (location.search.length === 0) {
@@ -22,7 +21,7 @@ const Search = () => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    console.log("query:", query);
+
     setSearchText(query.q);
   }, [location]);
 

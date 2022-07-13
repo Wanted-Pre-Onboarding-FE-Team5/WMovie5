@@ -1,12 +1,12 @@
-import React from 'react';
-import MovieList from '../components/MovieList';
-import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { movieState } from '../state/atoms';
+
+import React from "react";
+import MovieList from "../components/MovieList";
+import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { movieState } from "../state/atoms";
 
 const Home = () => {
-  const [movies, setMovies] = useRecoilState(movieState);
-
+  const movies = useRecoilValue(movieState);
   return (
     <MainContainer>
       <MovieList movies={movies} />
