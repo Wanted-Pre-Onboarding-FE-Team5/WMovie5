@@ -7,6 +7,7 @@ import Favorites from './pages/Favorites';
 import GNB from './components/GNB';
 import Footer from './components/Footer';
 
+
 function App() {
   return (
     <GlobalWrapper>

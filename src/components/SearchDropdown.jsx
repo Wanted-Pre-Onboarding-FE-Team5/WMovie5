@@ -1,77 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import Fuse from "fuse.js";
+import { useRecoilState } from 'recoil';
+import { movieState } from '../state/atoms';
 import styled from "styled-components";
 import { main_color } from "../styles/globalStyle";
 
-//test용 단어 목록 -> 기능 구현 완료후 삭제
-const wordsExample = [
-  "간",
-  "간염",
-  "간암",
-  "간성",
-  "간질병",
-  "간염증",
-  "간염증있을때",
-  "공백기간",
-  "기간",
-  "국가간교류",
-  "소금간",
-  "인간",
-  "인간관계",
-  "ap",
-  "korea",
-  "app",
-  "apple",
-  "air plane",
-  "enable",
-  "france",
-  "bag",
-  "water",
-  "drug",
-  "t-shirts"
-];
+const fuseOptions = {
+  findAllMatches: true,
+  shouldSort: true,
+}
 
 const SearchDropdown = (props) => {
-  const { value } = props; //최종 입력 단어만 넘어오는게 아님!
-  const [match, setMatch] = useState([]); //최종
+  const { value } = props;
 
-  //인풋 value로 만들수 있는 경우의 수 만드는 함수(우선순위 제 기준으로 정함...틀릴수도있음)
-  const customFussy = (value, callback) =>{
-    const numberOfCases = []; //경우의 수 = [app, ap, a, pp,p p]
+  const [match, setMatch] = useState([]);
+  const [titles, setTitles] = useState([]);
 
-    //정규식 x => 반복문과 slice 사용
-    for(let x=0;x<value.length;x++){
-      for(let y=0;y<value.length-x;y++){
-        numberOfCases.push(value.slice(x,value.length-y));
-      }
+  const navigate = useNavigate();
+  const movies = useRecoilState(movieState);
+  useEffect(()=>{
+    setTitles(movies[0].map(i=>i.title_english));
+  },[]);
+
+  const fuse = useMemo(
+    ()=>new Fuse(titles,fuseOptions),
+    [titles]
+  );
+
+  useEffect(()=>{
+    const sortedMatch = [];
+    for(let x of fuse.search(value)) {
+      sortedMatch.push(x.item);
     }
-    callback(numberOfCases);
+
+    if(sortedMatch.length===0) {
+      setMatch(["검색어 없음"]);
+    } else {
+      setMatch(sortedMatch);
+    }
+  },[value,fuse])
+
+  const handleDropdownClick = (event) => {
+    navigate(`/search?q=${event.target.innerText}`); 
   }
-
-  const customFussyCallback = (numberOfCasesArray) => {
-    const filteredMatch = [];
-    for(let x of numberOfCasesArray) {  //x 말고 뭐 좋은거 없을까요? case하려고 했는데 예약어임.
-      console.log(x);
-      filteredMatch.push(wordsExample.filter((word)=>word.includes(x)===true));
-      console.log("includes 적용하고 나서",filteredMatch);
-    }
-
-    if(filteredMatch.length===0) {
-      return ["검색어 없음"];
-    }
-    else return filteredMatch.sort();
-  };
-
-  useEffect(() => {
-    setMatch(customFussy(value,customFussyCallback));
-  },[value]);
 
   return (
     <SearchDropdownContainer>
       <Text>추천 검색어</Text>
       <SearchResult>
-        {match?.map((matchWord, index) => {
-          return <p key={index}>{matchWord}</p>;
-        })}
+        {match.map((matchWord, index) => {
+            return <Recommend key={index} onClick={handleDropdownClick}>{matchWord}</Recommend>;
+          })}
       </SearchResult>
     </SearchDropdownContainer>
   );
@@ -79,9 +59,8 @@ const SearchDropdown = (props) => {
 
 export default SearchDropdown;
 
-/* 이 아래 CSS는 자유롭게 수정해주세요 */
-export const SearchDropdownContainer = styled.div`
-  width: 95%;
+const SearchDropdownContainer = styled.div`
+  width: 100%;
   height: auto;
   background-color: ${main_color};
   color: white;
@@ -91,14 +70,20 @@ export const SearchDropdownContainer = styled.div`
   padding: 12px 18px;
   position: absolute;
   top: 34px;
+  z-index: 200;
 `;
 
-export const Text = styled.span`
+const Text = styled.span`
   color: gray;
   font-size: 0.8rem;
 `;
 
-export const SearchResult = styled.div`
-  width: 90%;
-  padding: 0;
+const SearchResult = styled.div`
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+`;
+
+const Recommend = styled.p`
+  padding: 5px 0;
 `;

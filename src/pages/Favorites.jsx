@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import MovieList from "../components/MovieList";
 import styled from "styled-components";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { favoriteMoviesReadOnly , movieState } from "../state/atoms";
-//import { useMovieModel } from "../models/useMovieModel";
+import { useRecoilValue } from "recoil";
+import { favoriteMoviesReadOnly } from "../state/atoms";
 
 const Favorites = () => {
-  const favoriteMovies = useRecoilValue(favoriteMoviesReadOnly );
+  const favoriteMovies = useRecoilValue(favoriteMoviesReadOnly);
   return (
     <FavoritesContainer>
-      <MovieList movies={favoriteMovies}  />
+      <MovieList movies={favoriteMovies} />
     </FavoritesContainer>
   );
 };

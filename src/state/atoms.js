@@ -27,11 +27,16 @@ export const movieDetailModalOpenState = atom({
   default: false,
 });
 
-export const favoriteMoviesReadOnly  = selector({
+export const favoriteMoviesReadOnly = selector({
   key: "favoriteMoviesReadOnly ",
   get: ({ get }) => {
     const movies = get(movieState);
     const favoriteMovies = movies.filter((movie) => movie.like);
     return favoriteMovies;
   },
+});
+
+export const movieInModalState = atom({
+  key: "movieInModalState",
+  default: undefined,
 });

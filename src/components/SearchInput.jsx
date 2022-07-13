@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { debounce } from '../utils/debounce';
-
-//atom = searchResult를 다루는 전역 state 제작 예정
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { debounce } from "../utils/debounce";
+import SearchDropdown from "./SearchDropdown";
 
 const SearchInput = () => {
   const [inputValue, setInputValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState('');
 
+
   const navigate = useNavigate();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebounceText = useCallback(
     debounce((value) => {
       setDebouncedValue(value);
@@ -27,19 +28,26 @@ const SearchInput = () => {
   const onKeyUp = (event) => {
     if (event.key === 'Enter' && event.target.value.trim().length > 0) {
       setDebouncedValue(event.target.value);
+
       navigate(`/search?q=${inputValue}`);
     }
   };
 
   useEffect(() => {
-    console.log('debouncedValue:', debouncedValue);
-  }, [debouncedValue]);
+
+    console.log("debouncedText:", debouncedText);
+  }, [debouncedText]);
 
   return (
     <SearchInputContainer>
-      <Input type='text' placeholder='검색어를 입력하세요' value={inputValue} onChange={handleChange} onKeyUp={onKeyUp} />
-      {/*debouncedValue && <SearchDropdown value={debouncedValue} />*/}
-      {/*{debouncedValue && <SearchDropdownFuse value={debouncedValue} />}*/}
+      <Input
+        type="text"
+        placeholder="검색어를 입력하세요"
+        value={inputValue}
+        onChange={handleChange}
+        onKeyUp={onKeyUp}
+      />
+      {debouncedText && <SearchDropdown value={debouncedText}/>}
     </SearchInputContainer>
   );
 };
