@@ -2,11 +2,14 @@ export class HttpRequest {
   constructor(service) {
     this.service = service;
   }
-  async get(url, callback) {
-    const response = await this.service.get(url);
-    callback(response);
+  async get() {
+    const response = await this.service.get().catch((err) => {
+      alert(err + "Check the server");
+      return { data: [] };
+    });
+    return response;
   }
   async patch(id, data) {
-    this.service.patch(`/${id}`, data);
+    await this.service.patch(`/${id}`, data);
   }
 }
