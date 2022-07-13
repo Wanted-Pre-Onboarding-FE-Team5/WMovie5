@@ -3,16 +3,11 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { debounce } from "../utils/debounce";
 import SearchDropdown from "./SearchDropdown";
-import SearchDropdownFuse from "./SearchDropdownFuse";
-
-//atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
   const [inputValue, setInputValue] = useState('');
   const [debouncedText, setDebouncedText] = useState("");
 
-  const [keyName, setKeyName] = useState("");
-  console.log(keyName);
   const navigate = useNavigate();
 
   const updateDebounceText = useCallback(
@@ -29,9 +24,6 @@ const SearchInput = () => {
   };
 
   const onKeyUp = (event) => {
-    if(event.key === "ArrowDown" | event.key === "ArrowUp") {
-      return;
-    }
     if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedText(event.target.value);
       navigate(`/search?q=${inputValue}`);
@@ -50,12 +42,8 @@ const SearchInput = () => {
         value={inputValue}
         onChange={handleChange}
         onKeyUp={onKeyUp}
-        onKeyDown={(e) => {setKeyName(e.key)}}
       />
-      {/*debouncedText && <SearchDropdownFuse value={debouncedText} />*/}
-      {debouncedText && (
-        <SearchDropdown value={debouncedText} keyName={keyName}/>
-      )}
+      {debouncedText && <SearchDropdown value={debouncedText}/>}
     </SearchInputContainer>
   );
 };
