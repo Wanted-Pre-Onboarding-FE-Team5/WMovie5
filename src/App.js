@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Favorites from "./pages/Favorites";
 import GNB from "./components/GNB";
-import Nopage from "./pages/Nopage";
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/favorites" element={<Favorites />} />
-          <Route path="/nopage" element={<Nopage />} />
         </Routes>
       </BrowserRouter>
     </GlobalWrapper>
@@ -27,4 +25,5 @@ export default App;
 const GlobalWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
+  background-color: #191b22;
 `;

@@ -21,8 +21,6 @@ const Movie = (props) => {
 
   const { toggleFavoriteById, getMovies } = useMovieModel();
 
-  // const containerRef = useRef();
-
   const onClickHandler = async (id, data) => {
     setIsOpenModal(false);
     await toggleFavoriteById(id, data);
@@ -40,8 +38,7 @@ const Movie = (props) => {
       {movies?.map((movie, index) => (
         <MoviePosterCard key={index}>
           {!isOpenModal && (
-            <button
-              // ref={containerRef}
+            <MoviePosterBtn
               onClick={() => {
                 onClickHandler(movie.id, { like: !movie.like });
               }}
@@ -51,7 +48,7 @@ const Movie = (props) => {
               ) : (
                 <MdFavoriteBorder />
               )}
-            </button>
+            </MoviePosterBtn>
           )}
           <MoviePoster
             onClick={() => {
@@ -59,12 +56,12 @@ const Movie = (props) => {
               openModal();
             }}
           >
-            <img
+            <PosterImg
               src={movie.medium_cover_image}
               onError={onErrorImg}
               alt="poster"
             />
-            <p> {movie.title}</p>
+            <PosterText> {movie.title}</PosterText>
           </MoviePoster>
         </MoviePosterCard>
       ))}
@@ -78,16 +75,17 @@ const MoviePosterContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  button {
-    position: absolute;
-    z-index: 10;
-    background-color: transparent;
-    font-size: 30px;
-    border: none;
-    color: white;
-    top: 5%;
-    left: 75%;
-  }
+`;
+
+const MoviePosterBtn = styled.div`
+  position: absolute;
+  z-index: 10;
+  background-color: transparent;
+  font-size: 30px;
+  border: none;
+  color: white;
+  top: 5%;
+  left: 75%;
 `;
 
 const MoviePoster = styled.div`
@@ -95,26 +93,7 @@ const MoviePoster = styled.div`
   height: 300px;
   margin: 10px;
 
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  p {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    opacity: 0;
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  :hover {
+  &:hover {
     transform: scale(1.1);
     img {
       opacity: 0.3;
@@ -124,6 +103,26 @@ const MoviePoster = styled.div`
       opacity: 1;
     }
   }
+`;
+
+const PosterImg = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const PosterText = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0;
+  text-align: center;
+  margin: 0 auto;
 `;
 
 const MoviePosterCard = styled.span`

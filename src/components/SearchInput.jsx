@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { debounce } from "../utils/debounce";
 
-//atom = searchResult를 다루는 전역 state 제작 예정
-
 const SearchInput = (filterTitle) => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
@@ -29,8 +27,6 @@ const SearchInput = (filterTitle) => {
     if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedText(event.target.value);
       navigate(`/search?q=${searchText}`);
-    } else {
-      navigate("/nopage");
     }
   };
 
