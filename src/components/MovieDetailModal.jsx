@@ -13,7 +13,6 @@ import useModalModel from "../models/useModalModel";
 
 const MovieDetailModal = (props) => {
   const { movieInModal } = props;
-  console.log(movieInModal);
   const setMovies = useSetRecoilState(movieState);
   const [like, setLike] = useState(movieInModal.like);
 
@@ -27,7 +26,6 @@ const MovieDetailModal = (props) => {
     closeModal();
   });
 
-  //models/favoriteModel.js 로 재사용하면 어떨까?
   const bookMarkOnClickHandler = async (id, data) => {
     await toggleFavoriteById(id, data);
     await getMovies().then((response) => {
@@ -114,7 +112,6 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* align-items: center; */
   padding: 10px;
   line-height: 1.4;
   color: #141414;
@@ -142,7 +139,7 @@ const Title = styled.h1``;
 const Summary = styled.h1`
   height: 300px;
   line-height: 16px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 const Year = styled.div``;
 const Rating = styled.div``;

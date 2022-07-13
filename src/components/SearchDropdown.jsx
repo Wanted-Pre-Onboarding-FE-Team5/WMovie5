@@ -84,7 +84,6 @@ const Text = styled.span`
 
 const SearchResult = styled.div`
   width: 100%;
-  /* overflow-y: scroll; */
 `;
 
 const Recommend = styled.p`

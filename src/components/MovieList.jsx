@@ -4,13 +4,12 @@ import Movie from "./Movie";
 
 const MovieList = (props) => {
   const { movies } = props;
-  console.log("movies.length", movies.length);
 
   return (
     <MovieListContainer>
       {movies.length < 1 ? (
         <MovieResultNotFound>
-          <NotFoundText>검색결과가없습니다.</NotFoundText>
+          <NotFoundText>검색 결과가 없습니다.</NotFoundText>
         </MovieResultNotFound>
       ) : (
         <Movie movies={movies} />

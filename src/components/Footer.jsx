@@ -7,7 +7,7 @@ const Footer = () => {
     <FooterContainer>
       <FooterText>WMovie5 v.0.1.0</FooterText>
       <FooterText>created by wanted-pre-onboarding-fe-5th team5</FooterText>
-      <FooterText>participants : 최보성, 김연진, 이유미, 홍정민, 김슬기</FooterText>
+      <FooterText>participants : 최보성, 김연진, 이유미, 김슬기</FooterText>
     </FooterContainer>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { debounce } from "../utils/debounce";
+import debounce from "../utils/debounce";
 import SearchDropdown from "./SearchDropdown";
 
 const SearchInput = () => {
