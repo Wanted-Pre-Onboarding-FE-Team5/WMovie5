@@ -6,14 +6,15 @@ import SearchDropdown from "./SearchDropdown";
 
 const SearchInput = () => {
   const [inputValue, setInputValue] = useState('');
-  const [debouncedText, setDebouncedText] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState('');
+
 
   const navigate = useNavigate();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebounceText = useCallback(
     debounce((value) => {
-      setDebouncedText(value);
+      setDebouncedValue(value);
     }, 500),
     []
   );
@@ -25,14 +26,15 @@ const SearchInput = () => {
   };
 
   const onKeyUp = (event) => {
+    if (event.key === 'Enter' && event.target.value.trim().length > 0) {
+      setDebouncedValue(event.target.value);
 
-    if (event.key === "Enter" && event.target.value.trim().length > 0) {
-      setDebouncedText(event.target.value);
       navigate(`/search?q=${inputValue}`);
     }
   };
 
   useEffect(() => {
+
     console.log("debouncedText:", debouncedText);
   }, [debouncedText]);
 

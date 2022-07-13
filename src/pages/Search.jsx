@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import qs from "qs";
@@ -39,4 +40,11 @@ const Search = () => {
 
 export default Search;
 
-const SearchContainer = styled.div``;
+const SearchContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #191b22;
+`;

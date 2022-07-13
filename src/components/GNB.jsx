@@ -28,27 +28,25 @@ const NavbarContainer = styled.nav`
   height: 80px;
   background-color: black;
   display: flex;
-  flex-direction: column;
-`;
-
-const LeftContainer = styled.div`
-  flex: 70%;
-  display: flex;
-  align-items: center;
-  padding-left: 5%;
-`;
-
-const RightContainer = styled.div`
-  flex: 30%;
-  display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const NavbarInnerContainer = styled.div`
-  width: 100%;
+  width: 90%;
   height: 80px;
   display: flex;
+  justify-content: space-between;
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const NavbarLinkContainer = styled.div`
