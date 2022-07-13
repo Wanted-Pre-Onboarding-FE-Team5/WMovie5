@@ -1,23 +1,26 @@
 ![화면 기록 2022-07-13 오후 4 06 00](https://user-images.githubusercontent.com/87474789/178672441-cfd10242-bb5f-47b4-8d4c-bae4324e5e65.gif)
 
+## WMovie5
 
-## 1. About this project
+> **Wanted Pre Onboarding Frontend 5th - 5팀** <br>
+> Week 1-2. 영화 정보 사이트 <br>
+> Week 2-1. 검색어 추천
 
-프로젝트 제목 : WMovie5 <br>
 
-프로젝트 목표 : 기본으로 주어진 기업 과제 assignment 학습 목표 달성
+
 
 ```
-<1-2. 영화 정보 사이트 만들기>
+[ 영화 정보 사이트 ]
 - data fetching module을 구현할 수 있다.
 - 검색 기능을 구현할 수 있다.
 - 즐겨찾기를 구현할 수 있다.
 
-<2-1. 검색어 추천 컴포넌트 개발하기>
+[ 검색어 추천 ]
 - 간단한 검색어 추천 로직을 만들 수 있다.
 ```
 
-## 2. 디렉토리 구조
+## 디렉토리 구조
+
 ```
 📦src
  ┣ 📂components
@@ -58,134 +61,66 @@
  ┗ 📜reset.css
 ```
 
-## 3. 기능 분업
 
-| 팀원 이름  | 기능                                              |
-| ----------------- | ------------------------------------------------------------------ |
-| [최보성](https://github.com/qhtjd2131) | json-server로 즐겨찾기 토글 구현 <br> recoil로 database에서 mock data 불러오는 기능 구현 <br> 보일러 플레이트 생성, 상세페이지 모달  |
-| [김슬기](https://github.com/sgsg9447) | 라우팅 연결 <br> Favorites페이지 레이아웃, 상세페이지 모달  <br>  MovieList, Movie 컴포넌트 레이아웃, database와 연결|
-| [이유미](https://github.com/ymStudyLog) | SearchDropdown 컴포넌트 레이아웃 <br> 검색어 추천기능 fuzzy string matching 기능 직접 구현 |
-| [김연진](https://github.com/yunjink) | GNB(검색창 포함) 컴포넌트 레이아웃 <br> Search페이지, SearchInput 컴포넌트 기능 구현 |
+## 기능 분업
 
 
-## 4. 기능 요구 사항 상세 설명
+| 팀원 이름 | 기능                                                                                                     |
+| --------- | -------------------------------------------------------------------------------------------------------- |
+| [최보성](https://github.com/qhtjd2131    | - Boiler Plate 생성 <br> - Recoil 상태관리 (데이터베이스, 즐겨찾기, 모달) <br> - Loading Image           |
+| [김슬기](https://github.com/sgsg9447)    | - 각 페이지 라우팅 <br> - 데이터베이스 연결 <br> - Layout : MovieList, Movie, MoviDetailModal, Favorites |
+| [이유미](https://github.com/ymStudyLog)    | - 검색어 추천기능 fuzzy string matching 기능 구현 <br> - Layout : SearchDropdown 컴포넌트 <br>           |
+| [김연진](https://github.com/yunjink)    | - Search 기능 구현 (debounce)<br> - Layout : Global Navigation Bar(GNB), Search, SearchInput             |
 
-<영화 정보 사이트>
 
-### 기본
+## 기능 요구 사항 상세 설명
 
-- 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
+<br>
 
-### 검색
+**Global Navigation Bar**
 
-- 초기 화면은 검색 탭에서 시작합니다.
-- 검색 탭은 상단에 `검색 입력 input` , `검색 button` 의 요소를 가집니다.
-- 검색어 입력 후 검색을 클릭하면 => 검색 결과 노출
-- 검색어 DB에 없는경우 => "검색 결과가 없습니다.” 노출
-<br/>
-    `<Movielist.js>`
-    ```jsx
-        const MovieList = (props) => {
-      const { movies } = props;
+- Home, Favorites 페이지 링크와 검색창으로 구성 <br>
+- 검색창은 SearchInput 컴포넌트로 분리
 
-      return (
-        <MovieListContainer>
-          {movies.length < 1 ? (
-            <MovieResultNotFound>
-              <NotFoundText>검색 결과가 없습니다.</NotFoundText>
-            </MovieResultNotFound>
-          ) : (
-            <Movie movies={movies} />
-          )}
-        </MovieListContainer>
-      );
-    };
-    ```
-### 영화 선택
 
-- 상세페이지 
+<br>
+
+**SearchInput** <br>
+
+- debounce 함수 구현
+- 사용자의 검색어(inputValue)와 <br>
+  debounce 함수를 적용한 검색어(debouncedValue)를
+  분리하여 상태관리
+- 검색어 입력 후 엔터로 전송하면 `/search` 로 이동
+
+**Search Page**
+
+- 제목으로 데이터베이스 필터하여 검색
+
+**MovieList**
+
+- MovieDatailModal 
   - 검색해서 출력된 영화 리스트 중 하나를 클릭시 모달
-    ```jsx
-    <MoviePoster
-            onClick={() => {
-              setMovieInModal(movie);
-              openModal();
-            }}
-          >
-    ```
   - 상세페이지는 각 영화의 간단한 설명등이 포함
-    ```jsx
-      <ModalContent>
-          <Header>
-            <Title>{movieInModal.title}</Title>
-            <Year>{movieInModal.year}</Year>
-            <Rating>{movieInModal.rating}</Rating>
-            <RunTime>{movieInModal.runTime}</RunTime>
-          </Header>
-          <Summary>{movieInModal.summary}</Summary>
-          <>
-    ```
   - 해당 페이지에는 즐겨찾기 `button` 요소
   - 즐겨 찾기를 누르면 즐겨찾기가 다시 누르면 즐겨찾기 취소로 표현
-    ```jsx
-    const onClickHandler = async (id, data) => {
-    closeModal();
-    await toggleFavoriteById(id, data);
-    await getMovies().then((response) => {
-      setMovies(response);
-    });
-     };
-    ```
+<br>
+
 >트러블 슈팅 : 포스터 중 일부 이미지 깨짐 현상 발생
 - 문제 : API로 부터 받아온 이미지중, error코드 404로 패칭 실패
 - 해결 : Img onError 속성으로 error 이미지 변경  
+<br>
 
-### 즐겨찾기
-
+**Favorites**
 - 즐겨 찾기 탭을 클릭하면 즐겨찾기페이지로 이동
-  
-    `<APP.js>`
-
-    ```jsx
-    <Route path="/favorites" element={<Favorites />}/>
-    ```
-
-    `<GNB.jsx>`
-
-    ```jsx
-    <NavbarLink to='favorites'>Favorites<NavbarLink>
-    ```
-
 - 즐겨찾기 페이지에는 즐겨찾기 된 영화리스트가 보여짐 
-    ```jsx
-    const Favorites = () => {
-      const favoriteMovies = useRecoilValue(favoriteMoviesReadOnly);
-      return (
-        <FavoritesContainer>
-          <MovieList movies={favoriteMovies} />
-        </FavoritesContainer>
-      );
-    };
-    ```
 - 즐겨찾기 기능 로직
-    `<atoms.js>`
-    ```jsx
-    export const favoriteMoviesReadOnly = selector({
-  key: "favoriteMoviesReadOnly ",
-  get: ({ get }) => {
-    const movies = get(movieState);
-    const favoriteMovies = movies.filter((movie) => movie.like);
-    return favoriteMovies;
-     }, 
-    });
-    ```
+<br>
 
 >트러블 슈팅 : 이벤트캡쳐링 발생
 - 문제 : 한개의 영화 포스터에 모달, 즐겨찾기 버튼 2개의 기능으로 즐겨찾기 onClick 이벤트시 모달이 열리는 문제 
 - 해결 : 즐겨찾기 버튼을 모달보다 상위 계층의 컴포넌트로 이동하여 해결
-
-
-### 검색어 추천 기능
+<br>
 
 **SearchDropdown 레이아웃**
 
@@ -209,15 +144,6 @@ SearchDropdownFuse.jsx //Fuse.js 로 fuzzy string matching 기능 구현
 ```
 
 - new Fuse()로 만든 새 인스턴스의 첫번째 인자로는 '비교할 db'와 두번째 인자로 '기본 매칭 옵션'을 전달한다.
-
-```JSX
-const fuseOptions = {
-  findAllMatches: true,
-  shouldSort: true,
-};
-
-```
-
 - fuse 인스턴스의 search() 메서드로 value를 전달해서 매칭 결과를 찾는다.
 - 매칭된 결과가 없으면 match state에 ["검색어 없음"] 값을 넣어준다.
 
