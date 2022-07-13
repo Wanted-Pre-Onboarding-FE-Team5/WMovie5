@@ -35,7 +35,7 @@ const SearchInput = () => {
   };
 
   useEffect(() => {
-    console.log("debouncedText:", debouncedValue);
+    console.log("debouncedValue:", debouncedValue);
   }, [debouncedValue]);
 
   return (
@@ -47,7 +47,12 @@ const SearchInput = () => {
         onChange={handleChange}
         onKeyUp={onKeyUp}
       />
-      {debouncedValue && <SearchDropdown value={debouncedValue} onResetInputValue={onResetInputValue} />}
+      {debouncedValue && (
+        <SearchDropdown
+          value={debouncedValue}
+          onResetInputValue={onResetInputValue}
+        />
+      )}
     </SearchInputContainer>
   );
 };
