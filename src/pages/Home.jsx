@@ -1,3 +1,4 @@
+
 import React from "react";
 import MovieList from "../components/MovieList";
 import styled from "styled-components";

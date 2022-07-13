@@ -25,6 +25,7 @@ const SearchInput = () => {
   };
 
   const onKeyUp = (event) => {
+
     if (event.key === "Enter" && event.target.value.trim().length > 0) {
       setDebouncedText(event.target.value);
       navigate(`/search?q=${inputValue}`);
