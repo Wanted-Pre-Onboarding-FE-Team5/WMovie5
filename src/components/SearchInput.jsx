@@ -6,40 +6,40 @@ import { debounce } from '../utils/debounce';
 //atom = searchResult를 다루는 전역 state 제작 예정
 
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState('');
-  const [debouncedText, setDebouncedText] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState('');
 
   const navigate = useNavigate();
 
   const updateDebounceText = useCallback(
     debounce((value) => {
-      setDebouncedText(value);
+      setDebouncedValue(value);
     }, 500),
     []
   );
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSearchText(value);
+    setInputValue(value);
     updateDebounceText(value);
   };
 
   const onKeyUp = (event) => {
     if (event.key === 'Enter' && event.target.value.trim().length > 0) {
-      setDebouncedText(event.target.value);
-      navigate(`/search?q=${searchText}`);
+      setDebouncedValue(event.target.value);
+      navigate(`/search?q=${inputValue}`);
     }
   };
 
   useEffect(() => {
-    console.log('debouncedText:', debouncedText);
-  }, [debouncedText]);
+    console.log('debouncedValue:', debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <SearchInputContainer>
-      <Input type='text' placeholder='검색어를 입력하세요' value={searchText} onChange={handleChange} onKeyUp={onKeyUp} />
-      {/*debouncedText && <SearchDropdown value={debouncedText} />*/}
-      {/*{debouncedText && <SearchDropdownFuse value={debouncedText} />}*/}
+      <Input type='text' placeholder='검색어를 입력하세요' value={inputValue} onChange={handleChange} onKeyUp={onKeyUp} />
+      {/*debouncedValue && <SearchDropdown value={debouncedValue} />*/}
+      {/*{debouncedValue && <SearchDropdownFuse value={debouncedValue} />}*/}
     </SearchInputContainer>
   );
 };
@@ -49,8 +49,8 @@ export default SearchInput;
 const SearchInputContainer = styled.div`
   width: 15rem;
   display: flex;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   position: relative;
 `;
